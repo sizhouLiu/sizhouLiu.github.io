@@ -1,0 +1,312 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>HTTP2的问题 | Stupid_Cat's Blog</title><meta name="author" content="Stupid_Cat"><meta name="copyright" content="Stupid_Cat"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="HTTP&#x2F;2HTTP&#x2F;2 的问题队头阻塞 HTTP&#x2F;2解决了HTTP的队头阻塞问题，但是并没有解决TCP队头阻塞问题！ HTTP&#x2F;1.1相比较于HTTP&#x2F;1.0来说，最主要的改进就是引入了持久连接（keep-alive）。 所谓的持久连接就是：在一个TCP连接上可以传送多个HTTP请求和响应，减少了建立和关闭连接的消耗和延迟。 引入了持久连接之后，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP2的问题">
+<meta property="og:url" content="https://sizhouliu.github.io/2024/05/02/HTTP2%E7%9A%84%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="Stupid_Cat&#39;s Blog">
+<meta property="og:description" content="HTTP&#x2F;2HTTP&#x2F;2 的问题队头阻塞 HTTP&#x2F;2解决了HTTP的队头阻塞问题，但是并没有解决TCP队头阻塞问题！ HTTP&#x2F;1.1相比较于HTTP&#x2F;1.0来说，最主要的改进就是引入了持久连接（keep-alive）。 所谓的持久连接就是：在一个TCP连接上可以传送多个HTTP请求和响应，减少了建立和关闭连接的消耗和延迟。 引入了持久连接之后，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/124754345?v=4">
+<meta property="article:published_time" content="2024-05-02T14:12:14.000Z">
+<meta property="article:modified_time" content="2024-05-02T14:14:52.355Z">
+<meta property="article:author" content="Stupid_Cat">
+<meta property="article:tag" content="计网 http">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://avatars.githubusercontent.com/u/124754345?v=4"><link rel="shortcut icon" href="/sizhouliu.github.io/img/favicon.png"><link rel="canonical" href="https://sizhouliu.github.io/2024/05/02/HTTP2%E7%9A%84%E9%97%AE%E9%A2%98/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/sizhouliu.github.io/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/sizhouliu.github.io/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'HTTP2的问题',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-05-02 22:14:52'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/124754345?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/sizhouliu.github.io/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/sizhouliu.github.io/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/sizhouliu.github.io/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/sizhouliu.github.io/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://39.100.83.144/"><span> 课程表</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/sizhouliu.github.io/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/sizhouliu.github.io/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/sizhouliu.github.io/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/sizhouliu.github.io/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/sizhouliu.github.io/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/sizhouliu.github.io/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/sizhouliu.github.io/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/sizhouliu.github.io/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/sizhouliu.github.io/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/sizhouliu.github.io/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/sizhouliu.github.io/" title="Stupid_Cat's Blog"><span class="site-name">Stupid_Cat's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/sizhouliu.github.io/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://39.100.83.144/"><span> 课程表</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/sizhouliu.github.io/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/sizhouliu.github.io/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/sizhouliu.github.io/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/sizhouliu.github.io/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/sizhouliu.github.io/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/sizhouliu.github.io/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/sizhouliu.github.io/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/sizhouliu.github.io/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/sizhouliu.github.io/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/sizhouliu.github.io/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">HTTP2的问题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-05-02T14:12:14.000Z" title="发表于 2024-05-02 22:12:14">2024-05-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-05-02T14:14:52.355Z" title="更新于 2024-05-02 22:14:52">2024-05-02</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="HTTP2的问题"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="HTTP-2"><a href="#HTTP-2" class="headerlink" title="HTTP&#x2F;2"></a>HTTP&#x2F;2</h1><h2 id="HTTP-2-的问题"><a href="#HTTP-2-的问题" class="headerlink" title="HTTP&#x2F;2 的问题"></a><strong>HTTP&#x2F;2 的问题</strong></h2><p><strong>队头阻塞</strong></p>
+<p><strong>HTTP&#x2F;2解决了HTTP的队头阻塞问题，但是并没有解决TCP队头阻塞问题！</strong></p>
+<p>HTTP&#x2F;1.1相比较于HTTP&#x2F;1.0来说，最主要的改进就是引入了持久连接（keep-alive）。</p>
+<p><strong>所谓的持久连接就是：在一个TCP连接上可以传送多个HTTP请求和响应，减少了建立和关闭连接的消耗和延迟。</strong></p>
+<p>引入了持久连接之后，在性能方面，HTTP协议有了明显的提升。</p>
+<p>HTTP&#x2F;1.1允许在持久连接上使用请求管道，是相对于持久连接的又一性能优化。</p>
+<p>所谓请求管道，就是在HTTP响应到达之前，可以将多条请求放入队列，当第一条HTTP请求通过网络流向服务器时，第二条和第三条请求也可以开始发送了。在高时延网络条件下，这样做可以降低网络的环回时间，提高性能。</p>
+<p><strong>但是，对于管道连接还是有一定的限制和要求的，其中一个比较关键的就是服务端必须按照与请求相同的顺序回送HTTP响应。</strong></p>
+<p>这也就意味着，如果一个响应返回发生了延迟，那么其后续的响应都会被延迟，直到队头的响应送达。这就是所谓的<strong>HTTP队头阻塞</strong>。</p>
+<p>但是HTTP队头阻塞的问题在HTTP&#x2F;2中得到了有效的解决。<strong>HTTP&#x2F;2废弃了管道化的方式</strong>，而是创新性的引入了帧、消息和数据流等概念。<strong>客户端和服务器可以把 HTTP 消息分解为互不依赖的帧，然后乱序发送，最后再在另一端把它们重新组合起来。</strong></p>
+<p><strong>因为没有顺序了，所以就不需要阻塞了，就有效的解决了HTTP对头阻塞的问题。</strong></p>
+<p>但是，HTTP&#x2F;2仍然会存在对头阻塞的问题，那是因为HTTP&#x2F;2其实还是依赖TCP协议实现的。</p>
+<p>TCP传输过程中会把数据拆分为一个个<strong>按照顺序</strong>排列的数据包，这些数据包通过网络传输到了接收端，接收端再<strong>按照顺序</strong>将这些数据包组合成原始数据，这样就完成了数据传输。</p>
+<p>但是如果其中的某一个数据包没有按照顺序到达，接收端会一直保持连接等待数据包返回，这时候就会阻塞后续请求。这就发生了<strong>TCP队头阻塞</strong>。</p>
+<p>HTTP&#x2F;1.1的管道化持久连接也是使得同一个TCP链接可以被多个HTTP使用，但是HTTP&#x2F;1.1中规定一个域名可以有6个TCP连接。而HTTP&#x2F;2中，同一个域名只是用一个TCP连接。</p>
+<p>所以，<strong>在HTTP&#x2F;2中，TCP对头阻塞造成的影响会更大</strong>，因为HTTP&#x2F;2的多路复用技术使得多个请求其实是基于同一个TCP连接的，那如果某一个请求造成了TCP队头阻塞，那么多个请求都会受到影响。</p>
+<h2 id="升级TCP是否可行？"><a href="#升级TCP是否可行？" class="headerlink" title="升级TCP是否可行？"></a><strong>升级TCP是否可行？</strong></h2><p>基于上面我们提到的这些问题，很多人提出来说：既然TCP存在这些问题，并且我们也知道这些问题的存在，甚至解决方案也不难想到，为什么不能对协议本身做一次升级，解决这些问题呢？</p>
+<p>这就涉及到一个”<strong>协议僵化</strong>“的问题。</p>
+<p>我们知道的，想要在家里使用网络有几个前提，首先我们要通过运行商开通网络，并且需要使用路由器，而路由器就是网络传输过程中的一个中间设备。</p>
+<blockquote>
+<p>中间设备是指插入在数据终端和信号转换设备之间，完成调制前或解调后某些附加功能的辅助设备。例如集线器、交换机和无线接入点、路由器、安全解调器、通信服务器等都是中间设备。</p>
+</blockquote>
+<p>在我们看不到的地方，这种中间设备还有很多很多，<strong>一个网络需要经过无数个中间设备的转发才能到达终端用户。</strong></p>
+<p>如果TCP协议需要升级，那么意味着需要这些中间设备都能支持新的特性，我们知道路由器我们可以重新换一个，但是其他的那些中间设备呢？尤其是那些比较大型的设备呢？更换起来的成本是巨大的。</p>
+<p>而且，除了中间设备之外，操作系统也是一个重要的因素，<strong>因为TCP协议需要通过操作系统内核来实现，而操作系统的更新也是非常滞后的。</strong></p>
+<p>所以，这种问题就被称之为”中间设备僵化”，也是导致”协议僵化”的重要原因。这也是限制着TCP协议更新的一个重要原因。</p>
+<p>所以，近些年来，由IETF标准化的许多TCP新特性都因缺乏广泛支持而没有得到广泛的部署或使用！</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h2><p>因为HTTP&#x2F;2底层是采用TCP协议实现的，虽然解决了HTTP队头阻塞的问题，但是对于TCP队头阻塞的问题却无能为力。</p>
+<p>TCP传输过程中会把数据拆分为一个个<strong>按照顺序</strong>排列的数据包，这些数据包通过网络传输到了接收端，接收端再<strong>按照顺序</strong>将这些数据包组合成原始数据，这样就完成了数据传输。</p>
+<p>但是如果其中的某一个数据包没有按照顺序到达，接收端会一直保持连接等待数据包返回，这时候就会阻塞后续请求。这就发生了<strong>TCP队头阻塞</strong>。</p>
+<p>另外，TCP这种可靠传输是靠三次握手实现的，TCP三次握手的过程客户端和服务器之间需要交互三次，那么也就是说需要消耗1.5 RTT。如果是HTTPS那么消耗的RTT就更多。</p>
+<p>而因为很多中间设备比较陈旧，更新换代成本巨大，这就导致TCP协议升级或者采用新的协议基本无法实现。</p>
+<p>所以，HTTP&#x2F;3选择了一种新的技术方案，那就是基于UDP做改造，这种技术叫做QUIC。</p>
+<h1 id="HTTP3"><a href="#HTTP3" class="headerlink" title="HTTP3"></a>HTTP3</h1><h2 id="QUIC协议"><a href="#QUIC协议" class="headerlink" title="QUIC协议"></a><strong>QUIC协议</strong></h2><p>HTTP&#x2F;2之所以”被弃用”，是因为他使用的传输层协议仍然是TCP，所以HTTP&#x2F;3首要解决的问题就是绕开TCP。</p>
+<p>那么如果研发一种新的协议，同样还是会因为受到中间设备僵化的影响，导致无法被大规模应用。所以，研发人员们想到了一种基于UDP实现的方式。</p>
+<p>于是，Google是最先采用这种方式并付诸于实践的，他们在2013年推出了一种叫做QUIC的协议，全称是Quick UDP Internet Connections。</p>
+<p>在设计之初，Google就希望使用这个协议来取代HTTPS&#x2F;HTTP协议，使网页传输速度加快。2015年6月，QUIC的网络草案被正式提交至互联网工程任务组。2018 年 10 月，互联网工程任务组 HTTP 及 QUIC 工作小组正式将基于 QUIC 协议的 HTTP（英语：HTTP over QUIC）重命名为HTTP&#x2F;3。</p>
+<p><strong>所以，我们现在所提到的HTTP&#x2F;3，其实就是HTTP over QUIC，即基于QUIC协议实现的HTTP。</strong></p>
+<p>QUIC协议有以下特点：</p>
+<ul>
+<li>基于UDP的传输层协议：它使用UDP端口号来识别指定机器上的特定服务器。</li>
+<li>可靠性：虽然UDP是不可靠传输协议，但是QUIC在UDP的基础上做了些改造，使得<strong>他提供了和TCP类似的可靠性</strong>。它提供了数据包重传、拥塞控制、调整传输节奏以及其他一些TCP中存在的特性。</li>
+<li>实现了无序、并发字节流：<strong>QUIC的单个数据流可以保证有序交付，但多个数据流之间可能乱序</strong>，这意味着单个数据流的传输是按序的，但是多个数据流中接收方收到的顺序可能与发送方的发送顺序不同！</li>
+<li>快速握手：<strong>QUIC提供0-RTT和1-RTT的连接建立</strong></li>
+<li>使用TLS 1.3传输层安全协议：与更早的TLS版本相比，TLS 1.3有着很多优点，但使用它的最主要原因是其握手所花费的往返次数更低，从而能降低协议的延迟。</li>
+</ul>
+<p>QUIC到底属于TCP&#x2F;IP协议族中的那一层呢？我们知道，QUIC是基于UDP实现的，并且是HTTP&#x2F;3的所依赖的协议，那么，按照TCP&#x2F;IP的分层来讲，他是属于传输层的，也就是和TCP、UDP属于同一层。</p>
+<p>更加细化一点的话，因为QUIC不仅仅承担了传输层协议的职责，还具备了TLS的安全性相关能力，所以，可以通过下图来理解QUIC在HTTP&#x2F;3的实现中所处的位置。</p>
+<h2 id="QUIC的连接建立"><a href="#QUIC的连接建立" class="headerlink" title="QUIC的连接建立"></a><strong>QUIC的连接建立</strong></h2><p>QUIC提出一种新的连接建立机制，基于这种连接接机制，实现了快速握手功能，一次QUIC连接建立可以实现使用 0-RTT 或者 1-RTT 来建立连接。</p>
+<p>UIC在握手过程中使用Diffie-Hellman算法来保证数据交互的安全性并合并了它的加密和握手过程来减小连接建立过程中的往返次数。</p>
+<blockquote>
+<p>Diffie–Hellman (以下简称DH)密钥交换是一个特殊的交换密钥的方法。它是密码学领域内最早付诸实践的密钥交换方法之一。DH可以让双方在完全缺乏对方(私有)信息的前提条件下通过不安全的信道达成一个共享的密钥。此密钥用于对后续信息交换进行对称加密。</p>
+</blockquote>
+<p>QUIC 连接的建立整体流程大致为：QUIC在握手过程中使用Diffie-Hellman算法协商初始密钥，初始密钥依赖于服务器存储的一组配置参数，该参数会周期性的更新。初始密钥协商成功后，服务器会提供一个临时随机数，双方根据这个数再生成会话密钥。客户端和服务器会使用新生的的密钥进行数据加解密。</p>
+<p>以上过程主要分为两个步骤：初始握手（Initial handshake）、最终（与重复）握手（Final (and repeat) handshake），分别介绍下这两个过程。</p>
+<p><strong>初始握手（Initial handshake）</strong></p>
+<p>在连接开始建立时，客户端会向服务端发送一个打招呼信息，（inchoate client hello (CHLO)），因为是初次建立，所以，服务端会返回一个拒绝消息（REJ），表明握手未建立或者密钥已过期。</p>
+<p><img src="https://pic2.zhimg.com/80/v2-61ae95afd407dc8097856542c0c88cfd_720w.webp" alt="img"></p>
+<p>但是，这个拒绝消息中还会包含更多的信息（配置参数），主要有：</p>
+<ul>
+<li>Server Config：一个服务器配置，包括服务器端的Diffie-Hellman算法的长期公钥（long term Diffie-Hellman public value）</li>
+<li>Certificate Chain：用来对服务器进行认证的信任链</li>
+<li>Signature of the Server Config：将Server Config使用信任链的叶子证书的public key加密后的签名</li>
+<li>Source-Address Token：一个经过身份验证的加密块，包含客户端公开可见的IP地址和服务器的时间戳。</li>
+</ul>
+<p>在客户端接收到拒绝消息（REJ）之后，客户端会进行数据解析，签名验证等操作，之后会将必要的配置缓存下来。</p>
+<p>同时，在接收到REJ之后，客户端会为这次连接随机产生一对自己的短期密钥（ephemeral Diffie-Hellman private value） 和 短期公钥（ephemeral Diffie-Hellman public value）。</p>
+<p>之后，客户端会将自己刚刚产生的短期公钥打包一个Complete CHLO的消息包中，发送给服务端。这个请求的目的是将自己的短期密钥传输给服务端，方便做前向保密。</p>
+<p>在发送了Complete CHLO消息给到服务器之后，为了减少RTT，客户端并不会等到服务器的响应，而是立刻会进行数据传输。</p>
+<p>为了保证数据的安全性，客户端会自己的短期密钥和服务器返回的长期公钥进行运算，得到一个初始密钥（initial keys）。</p>
+<p>有了这个初识密钥之后，客户端就可以用这个密钥，将想要传输的信息进行加密，然后把他们安全的传输给服务端了。</p>
+<p>另外一面，接收到Complete CHLO请求的服务器，解析请求之后，就同时拥有了客户端的短期公钥和自己保存的长期密钥。这样通过运算，服务端就能得到一份和客户端一模一样的初始密钥（initial keys）。</p>
+<p>接下来他接收到客户端使用初始密钥加密的数据之后，就可以使用这个初始密钥进行解密了，并且可以将自己的响应再通过这个初始密钥进行加密后返回给客户端。</p>
+<p><strong>所以，从开始建立连接一直到数据传送，只消耗了初始连接连接建立的 1 RTT</strong></p>
+<h2 id="最终（与重复）握手"><a href="#最终（与重复）握手" class="headerlink" title="最终（与重复）握手"></a><strong>最终（与重复）握手</strong></h2><p>那么，之后的数据传输就可以使用初始密钥（initial keys）加密了吗？</p>
+<p>其实并不完全是，因为初始密钥毕竟是基于服务器的长期公钥产生的，而在公钥失效前，几乎多有的连接使用的都是同一把公钥，所以，这其实存在着一定的危险性。</p>
+<p>所以，为了达到前向保密 (Forward Secrecy) 的安全性，客户端和服务端需要使用彼此的短期公钥和自己的短期密钥来进行运算。</p>
+<blockquote>
+<p>在密码学中，前向保密（英语：Forward Secrecy，FS）是密码学中通讯协议的安全属性，指的是长期使用的主密钥泄漏不会导致过去的会话密钥泄漏。</p>
+</blockquote>
+<p>那么现在问题是，客户端的短期密钥已经发送给服务端，而服务端只把自己的长期密钥给了客户端，并没有给到自己的短期密钥。</p>
+<p>所以，服务端在收到Complete CHLO之后，会给到服务器一个server hello(SHLO)消息，这个消息会使用初始密钥（initial keys）进行加密。</p>
+<p><img src="https://pic3.zhimg.com/80/v2-593da9ad871376e1b9c94104ec560172_720w.webp" alt="img"></p>
+<p>这个CHLO消息包中，会包含一个服务端重新生成的短期公钥。</p>
+<p>这样客户端和服务端就都有了对方的短期公钥（ephemeral Diffie-Hellman public value）。</p>
+<p>这样，客户端和服务端都可以基于自己的短期密钥和对方的短期公钥做运算，产生一个仅限于本次连接使用的前向保密密钥 (Forward-Secure Key)，后续的请求发送，都基于这个密钥进行加解密就可以了。</p>
+<p>这样，双方就完成了最终的密钥交换、连接的握手并且建立了QUIC连接。</p>
+<p>当下一次要重新创建连接的时候，客户端会从缓存中取出自己之前缓存下来的服务器的长期公钥，并重新创建一个短期密钥，重新生成一个初始密钥，再使用这个初始密钥对想要传输的数据进行加密，向服务器发送一个Complete CHLO 请求即可。这样就达到了0 RTT的数据传输。</p>
+<p><strong>所以，如果是有缓存的长期公钥，那么数据传输就会直接进行，准备时间是0 RTT</strong></p>
+<p><strong>以上，通过使用Diffie-Hellman算法协商密钥，并且对加密和握手过程进行合并，大大减小连接过程的RTT ，使得基于QUIC的连接建立可以少到1 RTT甚至0 RTT。</strong></p>
+<p><img src="https://pic4.zhimg.com/80/v2-cc893cfb594e784cc21cc82cb7330df3_720w.webp" alt="img"></p>
+<h2 id="多路复用"><a href="#多路复用" class="headerlink" title="多路复用"></a><strong>多路复用</strong></h2><p>基于TCP的协议实现的HTTP有一个最大的问题那就是队头阻塞问题，那么，在这方面，QUIC是如何解决这个问题的呢？</p>
+<p>TCP传输过程中会把数据拆分为一个个按照顺序排列的数据包，这些数据包通过网络传输到了接收端，接收端再按照顺序将这些数据包组合成原始数据，这样就完成了数据传输。</p>
+<p>但是如果其中的某一个数据包没有按照顺序到达，接收端会一直保持连接等待数据包返回，这时候就会阻塞后续请求。这就发生了TCP队头阻塞。</p>
+<p>类似于HTTP&#x2F;2，<strong>QUIC在同一物理连接上可以有多个独立的逻辑数据流，这些数据流并行在同一个连接上传输，且多个数据流之间间的传输没有时序性要求，也不会互相影响。</strong></p>
+<blockquote>
+<p>数据流（Streams）在QUIC中提供了一个轻量级、有序的字节流的抽象化</p>
+</blockquote>
+<p>QUIC的单个数据流可以保证有序交付，但多个数据流之间可能乱序。这意味着单个数据流的传输是按序的，但是多个数据流中接收方收到的顺序可能与发送方的发送顺序不同！</p>
+<p>也就是说同一个连接上面的多个数据流之间没有任何依赖（不要求按照顺序到达），即使某一个数据包没有达到，也只会影响自己这个数据流，并不会影响到到其他的数据流。</p>
+<h2 id="连接迁移你"><a href="#连接迁移你" class="headerlink" title="连接迁移你"></a><strong>连接迁移你</strong></h2><p>对于TCP连接的识别，需要通过服务器和客户端过双方的ip和端口四个参数进行的。在网络切换的场景中，比如手机切换网络，那么自身的ip就会发生变化。</p>
+<p>这就导致之前的TCP连接就会失效，就需要重新建立。这种场景对于移动端设备普及的今天来说，还是比较频繁的。</p>
+<p>所以，在这一点上，QUIC进行了优化。</p>
+<p><strong>QUIC协议使用特有的UUID来标记每一次连接，在网络环境发生变化的时候，只要UUID不变，就能不需要握手，继续传输数据。</strong></p>
+<h2 id="可靠性"><a href="#可靠性" class="headerlink" title="可靠性"></a><strong>可靠性</strong></h2><p>TCP之所以被称之为可靠链接，不仅仅是因为他有三次握手和四次关闭的过程，还因为他做了很多诸如<strong>流量控制、数据重传、拥塞控制</strong>等可靠性保证。这</p>
+<p>也是为什么一直以来都是以TCP作为HTTP实现的重要协议的原因。</p>
+<p>那么，QUIC想要取代TCP，就需要在这方面也做出努力，毕竟UDP自身是不具备这些能力的。</p>
+<p>TCP拥塞控制是TCP避免网络拥塞的算法，是互联网上主要的一个拥塞控制措施。经典的算法实现有很多，诸如TCP Tahoe 和 Reno、TCP Vegas、TCP Hybla、TCP New Reno、TCP Westwood和Westwood+以及TCP BIC 和 CUBIC等等。</p>
+<p>QUIC协议同样实现了<strong>拥塞控制</strong>。不依赖于特定的拥塞控制算法，并且提供了一个可插拔的接口，允许用户实验。默认使用了 TCP 协议的 Cubic 拥塞控制算法。</p>
+<p>关于<strong>流量控制</strong>，QUIC提供了基于stream和connection两种级别的流量控制，既需要对单个 Stream 进行控制，又需要针对所有 Stream 进行总体控制。</p>
+<p>QUIC的连接级流控，用以限制 QUIC 接收端愿意分配给连接的总缓冲区，避免服务器为某个客户端分配任意大的缓存。连接级流控与流级流控的过程基本相同，但转发数据和接收数据的偏移限制是所有流中的总和。</p>
+<h2 id="弊端"><a href="#弊端" class="headerlink" title="弊端"></a><strong>弊端</strong></h2><p>以上，我们介绍了很多QUIC的相比较于TCP的优点，可以说这种协议相比较于TCP确实要优秀一些。</p>
+<p>因为他是基于UDP的，并没有改变UDP协议本身，只是做了一些增强，虽然可以避开中间设备僵化的问题，但是，在推广上面也不是完全没有问题的。</p>
+<p>首先，<strong>很多企业、运营商和组织对53端口（DNS）以外的UDP流量会进行拦截或者限流</strong>，因为这些流量近来常被滥用于攻击。</p>
+<p>特别是一些<strong>现有的UDP协议和实现易受放大攻击（amplification attack）威胁，攻击者可以控制无辜的主机向受害者投放发送大量的流量。</strong></p>
+<p>所以，基于UDP的QUIC协议的传输可能会受到屏蔽。</p>
+<p>另外，因为UDP一直以来定位都是不可靠连接，所以有很多中间设备对于他的支持和优化程度并不高，所以，出现丢包的可能性还是比较高的。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://sizhouliu.github.io">Stupid_Cat</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://sizhouliu.github.io/2024/05/02/HTTP2%E7%9A%84%E9%97%AE%E9%A2%98/">https://sizhouliu.github.io/2024/05/02/HTTP2%E7%9A%84%E9%97%AE%E9%A2%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://sizhouliu.github.io" target="_blank">Stupid_Cat's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/sizhouliu.github.io/tags/%E8%AE%A1%E7%BD%91-http/">计网 http</a></div><div class="post_share"><div class="social-share" data-image="https://avatars.githubusercontent.com/u/124754345?v=4" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/sizhouliu.github.io/2024/05/02/7-1-7-2%E5%89%8D%E5%BE%80%E4%BF%9D%E5%AE%9A%E8%80%83%E8%AF%95%E6%97%85%E9%80%94%E9%9A%8F%E7%AC%94/" title="7.1~7.2前往保定考试旅途随笔"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">7.1~7.2前往保定考试旅途随笔</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/124754345?v=4" onerror="this.onerror=null;this.src='/sizhouliu.github.io/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Stupid_Cat</div><div class="author-info__description">这里是蠢猫的网站</div></div><div class="card-info-data site-data is-center"><a href="/sizhouliu.github.io/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/sizhouliu.github.io/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/sizhouliu.github.io/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sizhouliu"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sizhouliu" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:lsz8824523@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到蠢猫的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HTTP-2"><span class="toc-number">1.</span> <span class="toc-text">HTTP&#x2F;2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-2-%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.</span> <span class="toc-text">HTTP&#x2F;2 的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%87%E7%BA%A7TCP%E6%98%AF%E5%90%A6%E5%8F%AF%E8%A1%8C%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">升级TCP是否可行？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.3.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HTTP3"><span class="toc-number">2.</span> <span class="toc-text">HTTP3</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#QUIC%E5%8D%8F%E8%AE%AE"><span class="toc-number">2.1.</span> <span class="toc-text">QUIC协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#QUIC%E7%9A%84%E8%BF%9E%E6%8E%A5%E5%BB%BA%E7%AB%8B"><span class="toc-number">2.2.</span> <span class="toc-text">QUIC的连接建立</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%EF%BC%88%E4%B8%8E%E9%87%8D%E5%A4%8D%EF%BC%89%E6%8F%A1%E6%89%8B"><span class="toc-number">2.3.</span> <span class="toc-text">最终（与重复）握手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8"><span class="toc-number">2.4.</span> <span class="toc-text">多路复用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E8%BF%81%E7%A7%BB%E4%BD%A0"><span class="toc-number">2.5.</span> <span class="toc-text">连接迁移你</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="toc-number">2.6.</span> <span class="toc-text">可靠性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%8A%E7%AB%AF"><span class="toc-number">2.7.</span> <span class="toc-text">弊端</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/sizhouliu.github.io/2024/05/02/HTTP2%E7%9A%84%E9%97%AE%E9%A2%98/" title="HTTP2的问题">HTTP2的问题</a><time datetime="2024-05-02T14:12:14.000Z" title="发表于 2024-05-02 22:12:14">2024-05-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/sizhouliu.github.io/2024/05/02/7-1-7-2%E5%89%8D%E5%BE%80%E4%BF%9D%E5%AE%9A%E8%80%83%E8%AF%95%E6%97%85%E9%80%94%E9%9A%8F%E7%AC%94/" title="7.1~7.2前往保定考试旅途随笔">7.1~7.2前往保定考试旅途随笔</a><time datetime="2024-05-02T12:35:52.000Z" title="发表于 2024-05-02 20:35:52">2024-05-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/sizhouliu.github.io/2024/05/02/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8/" title="深度学习入门">深度学习入门</a><time datetime="2024-05-02T10:16:44.000Z" title="发表于 2024-05-02 18:16:44">2024-05-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Stupid_Cat</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/sizhouliu.github.io/js/utils.js?v=4.13.0"></script><script src="/sizhouliu.github.io/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><script src="/js/font.js"></script><script src="/js/jquery.js"></script><script src="/js/foot.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
