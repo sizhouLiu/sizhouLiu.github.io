@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Python的内存管理</title>
+      <link href="/2024/05/03/Python%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"/>
+      <url>/2024/05/03/Python%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Python的内存管理机制"><a href="#Python的内存管理机制" class="headerlink" title="Python的内存管理机制"></a>Python的内存管理机制</h1><h2 id="内存的申请"><a href="#内存的申请" class="headerlink" title="内存的申请"></a>内存的申请</h2><p>python申请内存会调用_PyObject_Malloc 函数来进行函数的申请</p><p>当申请内存大于512个byte的时候会调用C的malloc函数来申请内存</p><p>小于512时就会调用下面的pymalloc_alloc。在调用pymalloc_alloc时会首先进行一个内存对齐。他会把你申请的内存大小都改为8的倍数，比如你申请1~8个byte内存他都会给你8个8byte，这样做的目的也是为了减少内存碎片的产生。当你对齐结束后，Python会去找对应大小的Pool里找一个没有使用的一个Block丢给你，这样就完成了一次内存的分配。同样的返还的时候也是返还到对应的Pool里而不是直接Free。会被加入到Pool里边的FreeBolck链表中去，标记成可用状态。这样做的好处就是不需要再去找系统申请空间。</p><p>Python一般不会直接Free内存，只会在Arena里面没有一个Pool的时候free空间，所以Python里对于空间的free都是在Arena这个层级进行操作的</p><p><img src="/2024/05/03/Python%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/MyBlog\source_posts\Python的内存管理\image-20240104172510193.png" alt="image-20240104172510193"></p><h2 id="python的内存管理层级"><a href="#python的内存管理层级" class="headerlink" title="python的内存管理层级"></a>python的内存管理层级</h2><p>为了减少内存碎片 python有一套自己的内存管理机制</p><p><img src="/2024/05/03/Python%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/MyBlog\source_posts\Python的内存管理\image-20240104221757082.png" alt="image-20240104221757082"></p><h3 id="Block"><a href="#Block" class="headerlink" title="Block"></a>Block</h3><p>一共有三个层级 最小的一层叫做Block</p><h3 id="Pool"><a href="#Pool" class="headerlink" title="Pool:"></a>Pool:</h3><p>4k和一个内存页一样大,每一个Pool里都有相同大小的Block，一个Pool和另一个Pool之间他们拥有的Block的大小不一样大，但是每一个Pool的内部他们Block的大小都是相同的，</p><h3 id="Arena"><a href="#Arena" class="headerlink" title="Arena"></a>Arena</h3><p>Arena里有一个usedPools，usedPools是一个保存许多Pool指针的数组，而这个数组的下标对应着这个Pool的Block的大小 比如第0个Pool的Block的大小就是8个byte第1个就是16个Byte</p><p>256kArena里存放了许多的Pool 当Pool从没有使用到使用时 Block才会被使用，每一个Pool的大小是一样的但是Block的大小不一样，因此每一个Pool里存放的Block的数量也是不一样的。当Python 开始运行时会一般会建立16个Arena。在申请空间时候会优先给空间占据比较满的Arena使用 因此Arena实际上是Sort过的，这样就会保证Python不会使内存需求一直上升</p><h2 id="垃圾回收garba-coolction"><a href="#垃圾回收garba-coolction" class="headerlink" title="垃圾回收garba coolction"></a>垃圾回收garba coolction</h2><p>Python的一个最简单的垃圾回收机制是统计引用计数，也就是你每次引用一些东西的时候Python解释器会帮你数引用数，但是有的时候会出现循环引用的情况，导致释放了对象以后对象的一些属性依然在引用着对方，导致应用技术失效，这个时候就会用garba coolction来处理循环引用的问题</p><h3 id="容器-container"><a href="#容器-container" class="headerlink" title="容器(container)"></a>容器(container)</h3><p>所谓容器，就是可以引用其他对象的对象，比如List，Tuple 而 String int 就不是一个容器，也就不存在循环引用的问题。</p><p>所有容器类型的Object，在建立的时候就会告诉他你是一个容器 然后将这个Object放到垃圾回收的双向链表里，这也就是为什么Python找不到Object以后垃圾回收依然能找到这个Object</p><p>每一次触发垃圾回收的时候就会查找双向循环链表里有没有只剩下循环引用的容器，然后释放这个容器</p><h3 id="genneration"><a href="#genneration" class="headerlink" title="genneration"></a>genneration</h3><p>为什么要有genneration </p><p>因为在编程的过程中有大量的Object的生命周期非常短，用完就可以扔了，少部分变量生命周期非常长，如果我们把这些变量一直都放在链表里边，每次垃圾回收都需要检查一遍这些生命周期非常长的对象，而去判断一个变量是否循环引用是一非常耗时的工作，如果这些对象一直在这个链表里，程序会越跑越慢，因此我们会把这些生命周期非常长的对象复制到另一个genneration里 </p><p>在一个容器被创建时永远先存放在genneration0里边，每700次将这些东西合并到genneration1 genneration1 执行10次以后合并到genneration2里，达到一个分级管理的效果</p><p>但是genneration2 本身的对象大概率是不会被回收的，因此Cpython对垃圾回收做了一个优化的机制   genneration2中没有检测的对象的数量占总数量的25%以上的时候才会触发genneration2的垃圾回收</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>计算机网络自顶向下方法</title>
       <link href="/2024/05/03/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95/"/>
       <url>/2024/05/03/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%96%B9%E6%B3%95/</url>
@@ -78,6 +97,8 @@
         <tags>
             
             <tag> 深度学习 </tag>
+            
+            <tag> python </tag>
             
         </tags>
       
