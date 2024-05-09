@@ -1,0 +1,554 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>pandas学习 | Stupid_Cat's Blog</title><meta name="author" content="Stupid_Cat"><meta name="copyright" content="Stupid_Cat"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="pandas学习笔记Seriesserirs的创建12345678910111213import pandas as pdpd.Series(np)传入一个可迭代对象可以指定index作为键值#可以传入字典来创建 Series&gt;&gt;&gt; d &#x3D; &#123;&#x27;a&#x27;: 1, &#x27;b&#x27;: 2, &#x27;c&#x27;: 3&#125;&gt;&amp;g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pandas学习">
+<meta property="og:url" content="http://sizhouliu.github.io/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Stupid_Cat&#39;s Blog">
+<meta property="og:description" content="pandas学习笔记Seriesserirs的创建12345678910111213import pandas as pdpd.Series(np)传入一个可迭代对象可以指定index作为键值#可以传入字典来创建 Series&gt;&gt;&gt; d &#x3D; &#123;&#x27;a&#x27;: 1, &#x27;b&#x27;: 2, &#x27;c&#x27;: 3&#125;&gt;&amp;g">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img2.imgtp.com/2024/05/07/Sc2GKuJA.jpg">
+<meta property="article:published_time" content="2024-05-09T14:10:41.000Z">
+<meta property="article:modified_time" content="2024-05-09T14:13:34.286Z">
+<meta property="article:author" content="Stupid_Cat">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="数据分析">
+<meta property="article:tag" content="pandas">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img2.imgtp.com/2024/05/07/Sc2GKuJA.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://sizhouliu.github.io/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'pandas学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-05-09 22:13:34'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 7.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (true) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/124754345?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://39.100.83.144/"><span> 课程表</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img2.imgtp.com/2024/05/07/Sc2GKuJA.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Stupid_Cat's Blog"><span class="site-name">Stupid_Cat's Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://39.100.83.144/"><span> 课程表</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">pandas学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-05-09T14:10:41.000Z" title="发表于 2024-05-09 22:10:41">2024-05-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-05-09T14:13:34.286Z" title="更新于 2024-05-09 22:13:34">2024-05-09</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>15分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="pandas学习"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="pandas学习笔记"><a href="#pandas学习笔记" class="headerlink" title="pandas学习笔记"></a>pandas学习笔记</h1><h2 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h2><h4 id="serirs的创建"><a href="#serirs的创建" class="headerlink" title="serirs的创建"></a>serirs的创建</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">pd.Series(np)</span><br><span class="line">传入一个可迭代对象</span><br><span class="line">可以指定index作为键值</span><br><span class="line"><span class="comment">#可以传入字典来创建 Series</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">&#x27;a&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>: <span class="number">3</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ser = pd.Series(data=d, index=[<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ser</span><br><span class="line">a   <span class="number">1</span></span><br><span class="line">b   <span class="number">2</span></span><br><span class="line">c   <span class="number">3</span></span><br><span class="line">dtype: int64</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="切片和索引"><a href="#切片和索引" class="headerlink" title="切片和索引"></a>切片和索引</h4><p>与字典一样 Series可以通过index来查找对应的值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">d = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&quot;xiaoming&quot;</span>, <span class="string">&#x27;age&#x27;</span>: <span class="number">18</span>, <span class="string">&#x27;tel&#x27;</span>: <span class="number">1008010</span>&#125;</span><br><span class="line">t3 = pd.Series(d)</span><br><span class="line"><span class="built_in">print</span>(t3[<span class="string">&#x27;name&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(t3[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Output：</span></span><br><span class="line">xiaoming</span><br><span class="line">xiaoming</span><br></pre></td></tr></table></figure>
+
+<p>同样的 我们可以对其进行切片以及离散的索引取值</p>
+<p><img src="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230715112443039.png" alt="image-20230715112443039"></p>
+<p>Series也有where方法但与numpy有些不同</p>
+<hr>
+<h2 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h2><p>DataFrame是一种二维数据</p>
+<h4 id="DataFrame的基础属性"><a href="#DataFrame的基础属性" class="headerlink" title="DataFrame的基础属性"></a>DataFrame的基础属性</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">df.shape <span class="comment"># 行数 列数</span></span><br><span class="line">df.dtypes <span class="comment"># 列数据类型</span></span><br><span class="line">df.ndim <span class="comment">#数据维度</span></span><br><span class="line">df.index <span class="comment"># 行索引</span></span><br><span class="line">df.columns <span class="comment"># 列索引</span></span><br><span class="line">df.values <span class="comment"># 对象值，二维ndarray数组</span></span><br><span class="line"></span><br><span class="line">DataFrame整体情况查询</span><br><span class="line">df.head(<span class="number">3</span>) <span class="comment"># 显示头部几行，默认5行df.tal(3) # 显示未尾几行，默认5行</span></span><br><span class="line">df.info()<span class="comment"># 相关信息概览: 行数，列数，列索引，列非空值个数，列类型，列类型，内存占用 </span></span><br><span class="line">df.describe()  <span class="comment">#快速综合统计结果: 计数，均值，标准差，最大值，四分位数，最小值</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="DataFrame的切片索引"><a href="#DataFrame的切片索引" class="headerlink" title="DataFrame的切片索引"></a>DataFrame的切片索引</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">Input：</span><br><span class="line">df = pd.DataFrame(np.arange(<span class="number">12</span>).reshape(<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line">Output：</span><br><span class="line"><span class="number">0</span>  <span class="number">1</span>   <span class="number">2</span>   <span class="number">3</span></span><br><span class="line"><span class="number">0</span>  <span class="number">0</span>  <span class="number">1</span>   <span class="number">2</span>   <span class="number">3</span></span><br><span class="line"><span class="number">1</span>  <span class="number">4</span>  <span class="number">5</span>   <span class="number">6</span>   <span class="number">7</span></span><br><span class="line"><span class="number">2</span>  <span class="number">8</span>  <span class="number">9</span>  <span class="number">10</span>  <span class="number">11</span></span><br><span class="line"><span class="comment"># Dataframe既有行索引又有列索引 </span></span><br><span class="line">行索引叫index axis = <span class="number">0</span></span><br><span class="line">列索引叫 columns axis =<span class="number">1</span></span><br><span class="line"></span><br><span class="line">与之前一样我们可以指定行索引和列索引</span><br><span class="line">df = pd.DataFrame(np.arange(<span class="number">12</span>).reshape(<span class="number">3</span>,<span class="number">4</span>),index=<span class="built_in">list</span>(<span class="string">&#x27;abc&#x27;</span>),columns=<span class="built_in">list</span>(<span class="string">&#x27;wxyz&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(df)</span><br><span class="line">OutPut：</span><br><span class="line">   w  x   y   z</span><br><span class="line">a  <span class="number">0</span>  <span class="number">1</span>   <span class="number">2</span>   <span class="number">3</span></span><br><span class="line">b  <span class="number">4</span>  <span class="number">5</span>   <span class="number">6</span>   <span class="number">7</span></span><br><span class="line">c  <span class="number">8</span>  <span class="number">9</span>  <span class="number">10</span>  <span class="number">11</span></span><br><span class="line"><span class="comment"># pandas取行或者列的注意点</span></span><br><span class="line"><span class="comment">#- 方括号写数组，表示取行，对行进行操作</span></span><br><span class="line"><span class="comment">#- 写字符串，表示的去列索引,对列进行操作</span></span><br><span class="line">选择某一列  df[<span class="string">&quot;CountAnimalName&quot;</span>]</span><br><span class="line">同时选择行和列 df[:<span class="number">100</span>][<span class="string">&quot;CountAkimalName&quot;</span>]</span><br><span class="line">还有更多的经过pandas优化过的选择方式</span><br><span class="line">df.loc 通过标签索引行数据</span><br><span class="line">df.iloc 通过位置获取列数据</span><br><span class="line"><span class="comment">#Input:</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;*&quot;</span>*<span class="number">100</span>)</span><br><span class="line"><span class="built_in">print</span>(df.loc[<span class="string">&quot;a&quot;</span>, <span class="string">&quot;z&quot;</span>])</span><br><span class="line"><span class="built_in">print</span>(df.loc[<span class="string">&quot;a&quot;</span>])</span><br><span class="line"><span class="built_in">print</span>(df.loc[:, <span class="string">&quot;y&quot;</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;*&quot;</span>*<span class="number">100</span>)</span><br><span class="line"><span class="built_in">print</span>(df.iloc[<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(df.iloc[:,<span class="number">1</span>])</span><br><span class="line"><span class="built_in">print</span>(df.iloc[[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">2</span>]])</span><br><span class="line"><span class="comment"># OutPut:</span></span><br><span class="line">****************************************************************************</span><br><span class="line"><span class="number">3</span></span><br><span class="line">w    <span class="number">0</span></span><br><span class="line">x    <span class="number">1</span></span><br><span class="line">y    <span class="number">2</span></span><br><span class="line">z    <span class="number">3</span></span><br><span class="line">Name: a, dtype: int32</span><br><span class="line">a     <span class="number">2</span></span><br><span class="line">b     <span class="number">6</span></span><br><span class="line">c    <span class="number">10</span></span><br><span class="line">Name: y, dtype: int32</span><br><span class="line">****************************************************************************</span><br><span class="line"><span class="number">1</span></span><br><span class="line">a    <span class="number">1</span></span><br><span class="line">b    <span class="number">5</span></span><br><span class="line">c    <span class="number">9</span></span><br><span class="line">Name: x, dtype: int32</span><br><span class="line">   x  y</span><br><span class="line">a  <span class="number">1</span>  <span class="number">2</span></span><br><span class="line">b  <span class="number">5</span>  <span class="number">6</span></span><br><span class="line"><span class="comment"># 布尔索引</span></span><br><span class="line">与之前相同也有</span><br><span class="line"> df[df[<span class="string">&quot;Count_AnimalName&quot;</span>]&gt;<span class="number">800</span>]</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="DataFrame的字符串方法"><a href="#DataFrame的字符串方法" class="headerlink" title="DataFrame的字符串方法"></a>DataFrame的字符串方法</h4><p><img src="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230718091516640.png![image-20230718095515935](C:\Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230718095515935.png" alt="image-20230718091516640"></p>
+<h4 id="DataFrame的排序"><a href="#DataFrame的排序" class="headerlink" title="DataFrame的排序"></a>DataFrame的排序</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">df.sort_value()</span><br><span class="line"> <span class="keyword">def</span> <span class="title function_">sort_values</span>(<span class="params">  <span class="comment"># type: ignore[override]</span></span></span><br><span class="line"><span class="params">        self,</span></span><br><span class="line"><span class="params">        by,</span></span><br><span class="line"><span class="params">        axis: Axis = <span class="number">0</span>,</span></span><br><span class="line"><span class="params">        ascending=<span class="literal">True</span>,</span></span><br><span class="line"><span class="params">        inplace: <span class="built_in">bool</span> = <span class="literal">False</span>,</span></span><br><span class="line"><span class="params">        kind: <span class="built_in">str</span> = <span class="string">&quot;quicksort&quot;</span>,</span></span><br><span class="line"><span class="params">        na_position: <span class="built_in">str</span> = <span class="string">&quot;last&quot;</span>,</span></span><br><span class="line"><span class="params">        ignore_index: <span class="built_in">bool</span> = <span class="literal">False</span>,</span></span><br><span class="line"><span class="params">        key: ValueKeyFunc = <span class="literal">None</span>,</span></span><br><span class="line"><span class="params">    </span>):</span><br></pre></td></tr></table></figure>
+
+<h4 id="缺失数据的处理"><a href="#缺失数据的处理" class="headerlink" title="缺失数据的处理"></a>缺失数据的处理</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">pd.isnull 可以帮助我们判断这个值是否为NAN</span><br><span class="line">pd.notnull 可以判断不是nan的值</span><br><span class="line"></span><br><span class="line">处理方式<span class="number">1</span>:删除NaN所在的行列</span><br><span class="line">dropna (axis=<span class="number">0</span>,how=<span class="built_in">any</span>,inplace=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">how 传入<span class="built_in">any</span>或<span class="built_in">all</span> 全部为nan就删除或者部分nan删除</span><br><span class="line">inplace 是选择是否在原地进行替换</span><br><span class="line"></span><br><span class="line">处理方式<span class="number">2</span>: 填充数据</span><br><span class="line">t.fillna(t.mean()),t.fiallna(t.median()),t.fillna(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">处理为<span class="number">0</span>的数据:</span><br><span class="line">t[t==<span class="number">0</span>] = np.nan</span><br><span class="line">当然并不是每次为<span class="number">0</span>的数据都需要处理</span><br><span class="line">计算平均值等情况，nan是不参与计算的，但是<span class="number">0</span>会</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Pandas读取外部数据"><a href="#Pandas读取外部数据" class="headerlink" title="Pandas读取外部数据"></a>Pandas读取外部数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df = pd.read_csv(path) 打开csv文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230715115714667.png" alt="image-20230715115714667"></p>
+<p>有很多方法打开各式数据</p>
+<h2 id="数据的合并和分类聚合"><a href="#数据的合并和分类聚合" class="headerlink" title="数据的合并和分类聚合"></a>数据的合并和分类聚合</h2><h4 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.join 把索引相同数据合并到一起</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230718171931457.png" alt="image-20230718171931457"></p>
+<p>merge按照指定的列把数据按照一定的方式合并到一起</p>
+<p><img src="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230718183844190.png" alt="image-20230718183844190"></p>
+<ul>
+<li>如果两个集有相同的列表头那就可以用 on参数指定‘df1.merge(df3.on&#x3D;”a”，how&#x3D;”outer”)</li>
+<li>取交集的本质是判断相同行的值是否相等 如果相等把这一行的另外的数据补到后边</li>
+<li>默认为inner交集</li>
+<li>outer 并集，NAN补全</li>
+<li>left 左边为准NAN补全</li>
+<li>right 右边为准，NAN补全</li>
+</ul>
+<h4 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h4><p>在pandas中类似的分组的操作我们有很简单的方式来完成</p>
+<p><code>df.groupby(by=&quot;columns_name&quot;)</code></p>
+<p>grouped是一个DataFrameGroupBy对象，是可迭代的grouped中的每一个元素是一个元组元组里面是（索引(分组的值)，分组之后的DataFrame）</p>
+<p>DataFrameGroupBy对象有很多经过优化的方法</p>
+<table>
+<thead>
+<tr>
+<th>函数名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>count</td>
+<td>分组中非NA值的数量</td>
+</tr>
+<tr>
+<td>sum</td>
+<td>非NA值的和</td>
+</tr>
+<tr>
+<td>mean</td>
+<td>非NA值的平均值</td>
+</tr>
+<tr>
+<td>median</td>
+<td>非NA值的算术平均数</td>
+</tr>
+<tr>
+<td>std、var</td>
+<td>无偏（分母为n-1）标准差和方差</td>
+</tr>
+<tr>
+<td>min、max</td>
+<td>非NA的最小值最大值</td>
+</tr>
+</tbody></table>
+<p>如果我们需要对不同的列进行分组统计</p>
+<p><code>grouped = df.groupby(by=[df[&quot;Country&quot;],df[&quot;State/Province&quot;]])</code></p>
+<p>很多时候我们只希望对获取分组之后的某一部分数据，或者说我们只希望对某几列数据进行分组</p>
+<p>获取分组之后的某一部分数据：</p>
+<p> <code>df.groupby</code>(by&#x3D;[“Country”,”State&#x2F;Province”])[“Country”].count()</p>
+<p>对某几列数据进行分组：</p>
+<p> <code>df[&quot;Country&quot;].groupby(by=[df[&quot;Country&quot;],df[&quot;State/Province&quot;]]).count()</code></p>
+<p>观察结果，由于只选择了一列数据，所以结果是一个Series类型</p>
+<p><code>t1 = df[[&quot;Country&quot;]].groupby(by=[df[&quot;Country&quot;],df[&quot;State/Province&quot;]]).count()</code></p>
+<p><code>t2 = df.groupby(by=[&quot;Country&quot;,&quot;State/Province&quot;])[[&quot;Country&quot;]].count()</code></p>
+<p>以上的两条命令结果一样和之前的结果的区别在于当前返回的是一个DataFrame类型</p>
+<h4 id="索引和复合索引"><a href="#索引和复合索引" class="headerlink" title="索引和复合索引"></a>索引和复合索引</h4><ul>
+<li>简单的索引操作：获取index：df.index</li>
+<li>指定index ：df.index &#x3D; [‘x’,’y’]</li>
+<li>重新设置index : df.reindex(list(“abcedf”))</li>
+<li>指定某一列作为index ：df.set_index(“Country”,drop&#x3D;False) drop为False时被指定为index的那一列不会被删除</li>
+<li>返回index的唯一值：df.set_index(“Country”).index.unique() 因为有unique 说明index的值可以重复</li>
+</ul>
+<p><img src="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230718220049150.png" alt="image-20230718220049150"></p>
+<p>当复合重复时索引会省略多余部分</p>
+<h5 id="series复合索引"><a href="#series复合索引" class="headerlink" title="series复合索引"></a>series复合索引</h5><p><img src="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230719093334788.png" alt="image-20230719093334788"></p>
+<p>如果要直接用level标签里的标签作为索引有：</p>
+<p><img src="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230719094532204.png" alt="image-20230719094532204"></p>
+<h5 id="DataFrame复合索引"><a href="#DataFrame复合索引" class="headerlink" title="DataFrame复合索引"></a>DataFrame复合索引</h5><p><img src="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230719095207535.png" alt="image-20230719095207535"></p>
+<h2 id="Pandas时间序列"><a href="#Pandas时间序列" class="headerlink" title="Pandas时间序列"></a>Pandas时间序列</h2><p>不管在什么行业，时间序列都是一种非常重要的数据形式，很多统计数据以及数据的规律也都和时间序列有着非常重要的联系</p>
+<h4 id="生成一段时间范围"><a href="#生成一段时间范围" class="headerlink" title="生成一段时间范围"></a>生成一段时间范围</h4><p><code>pd.date_range(start=None, end=None, periods=None, freq=&#39;D&#39;)</code></p>
+<p>start和end以及freq配合能够生成start和end范围内以频率freq的一组时间索引</p>
+<p>start和periods以及freq配合能够生成从start开始的频率为freq的periods个时间索引</p>
+<p><img src="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230719154850921.png" alt="image-20230719154850921"></p>
+<p><img src="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230719115903091.png" alt="image-20230719115903091"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">index=pd.date_range(<span class="string">&quot;20170101&quot;</span>,periods=<span class="number">10</span>)</span><br><span class="line">df = pd.DataFrame(np.random.rand(<span class="number">10</span>),index=index)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我们可以使用pandas提供的方法把时间字符串转化为时间序列</p>
+<p><code>df[&quot;timeStamp&quot;] = pd.to_datetime(df[&quot;timeStamp&quot;],format=&quot;&quot;)</code></p>
+<p>format参数大部分情况下可以不用写，但是对于pandas无法格式化的时间字符串，我们可以使用该参数，比如包含中文</p>
+<h2 id="pandas重采样"><a href="#pandas重采样" class="headerlink" title="pandas重采样"></a>pandas重采样</h2><p><strong>重采样</strong>：指的是将时间序列从<strong>一个频率转化为另一个频率进行</strong>处理的过程，将高频率数据转化为低频率数据为<strong>降采样</strong>，低频率转化为高频率为<strong>升采样</strong></p>
+<p>pandas提供了一个resample的方法来帮助我们实现频率转化</p>
+<p><img src="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/Users\sz.L\AppData\Roaming\Typora\typora-user-images\image-20230719161942707.png" alt="image-20230719161942707"></p>
+<h2 id="PeriodIndex"><a href="#PeriodIndex" class="headerlink" title="PeriodIndex"></a>PeriodIndex</h2><p>之前所学习的DatetimeIndex可以理解为时间戳</p>
+<p>PeriodIndex可以理解为时间段</p>
+<p><code>periods = pd.PeriodIndex(year=data[&quot;year&quot;],month=data[&quot;month&quot;],day=data[&quot;day&quot;],hour=data[&quot;hour&quot;],freq=&quot;H&quot;)</code></p>
+<p>如果给这个时间段降采样</p>
+<p><code>data = df.set_index(periods).resample(&quot;10D&quot;).mean()</code></p>
+<h2 id="pandas常用接口"><a href="#pandas常用接口" class="headerlink" title="pandas常用接口"></a>pandas常用接口</h2><h3 id="1、维度查看："><a href="#1、维度查看：" class="headerlink" title="1、维度查看："></a>1、维度查看：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.shape</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、数据表基本信息（维度、列名称、数据格式、所占空间等）："><a href="#2、数据表基本信息（维度、列名称、数据格式、所占空间等）：" class="headerlink" title="2、数据表基本信息（维度、列名称、数据格式、所占空间等）："></a>2、数据表基本信息（维度、列名称、数据格式、所占空间等）：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.info()</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3、每一列数据的格式："><a href="#3、每一列数据的格式：" class="headerlink" title="3、每一列数据的格式："></a>3、每一列数据的格式：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.dtypes</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、某一列格式："><a href="#4、某一列格式：" class="headerlink" title="4、某一列格式："></a>4、某一列格式：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;B&#x27;</span>].dtype</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5、空值："><a href="#5、空值：" class="headerlink" title="5、空值："></a>5、空值：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.isnull()</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6、查看某一列空值："><a href="#6、查看某一列空值：" class="headerlink" title="6、查看某一列空值："></a>6、查看某一列空值：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;B&#x27;</span>].isnull()</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="7、查看某一列的唯一值："><a href="#7、查看某一列的唯一值：" class="headerlink" title="7、查看某一列的唯一值："></a>7、查看某一列的唯一值：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;B&#x27;</span>].unique()</span><br></pre></td></tr></table></figure>
+
+<h3 id="8、查看数据表的值："><a href="#8、查看数据表的值：" class="headerlink" title="8、查看数据表的值："></a>8、查看数据表的值：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.values </span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="9、查看列名称："><a href="#9、查看列名称：" class="headerlink" title="9、查看列名称："></a>9、查看列名称：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.columns</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="10、查看前5行数据、后5行数据："><a href="#10、查看前5行数据、后5行数据：" class="headerlink" title="10、查看前5行数据、后5行数据："></a>10、查看前5行数据、后5行数据：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.head() <span class="comment">#默认前5行数据</span></span><br><span class="line">df.tail()    <span class="comment">#默认后5行数据</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="三、数据表清洗"><a href="#三、数据表清洗" class="headerlink" title="三、数据表清洗"></a>三、数据表清洗</h2><h3 id="1、用数字0填充空值："><a href="#1、用数字0填充空值：" class="headerlink" title="1、用数字0填充空值："></a>1、用数字0填充空值：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.fillna(value=<span class="number">0</span>)</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、使用列prince的均值对NA进行填充："><a href="#2、使用列prince的均值对NA进行填充：" class="headerlink" title="2、使用列prince的均值对NA进行填充："></a>2、使用列prince的均值对NA进行填充：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;prince&#x27;</span>].fillna(df[<span class="string">&#x27;prince&#x27;</span>].mean())</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、清除city字段的字符空格："><a href="#3、清除city字段的字符空格：" class="headerlink" title="3、清除city字段的字符空格："></a>3、清除city字段的字符空格：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;city&#x27;</span>]=df[<span class="string">&#x27;city&#x27;</span>].<span class="built_in">map</span>(<span class="built_in">str</span>.strip)</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4、大小写转换："><a href="#4、大小写转换：" class="headerlink" title="4、大小写转换："></a>4、大小写转换：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;city&#x27;</span>]=df[<span class="string">&#x27;city&#x27;</span>].<span class="built_in">str</span>.lower()</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、更改数据格式："><a href="#5、更改数据格式：" class="headerlink" title="5、更改数据格式："></a>5、更改数据格式：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;price&#x27;</span>].astype(<span class="string">&#x27;int&#x27;</span>)       </span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6、更改列名称："><a href="#6、更改列名称：" class="headerlink" title="6、更改列名称："></a>6、更改列名称：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.rename(columns=&#123;<span class="string">&#x27;category&#x27;</span>: <span class="string">&#x27;category-size&#x27;</span>&#125;) </span><br></pre></td></tr></table></figure>
+
+<h3 id="7、删除后出现的重复值："><a href="#7、删除后出现的重复值：" class="headerlink" title="7、删除后出现的重复值："></a>7、删除后出现的重复值：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;city&#x27;</span>].drop_duplicates()</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="8-、删除先出现的重复值："><a href="#8-、删除先出现的重复值：" class="headerlink" title="8 、删除先出现的重复值："></a>8 、删除先出现的重复值：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;city&#x27;</span>].drop_duplicates(keep=<span class="string">&#x27;last&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="9、数据替换："><a href="#9、数据替换：" class="headerlink" title="9、数据替换："></a>9、数据替换：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">&#x27;city&#x27;</span>].replace(<span class="string">&#x27;sh&#x27;</span>, <span class="string">&#x27;shanghai&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、数据预处理"><a href="#四、数据预处理" class="headerlink" title="四、数据预处理"></a>四、数据预处理</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">df1=pd.DataFrame(&#123;<span class="string">&quot;id&quot;</span>:[<span class="number">1001</span>,<span class="number">1002</span>,<span class="number">1003</span>,<span class="number">1004</span>,<span class="number">1005</span>,<span class="number">1006</span>,<span class="number">1007</span>,<span class="number">1008</span>], </span><br><span class="line"><span class="string">&quot;gender&quot;</span>:[<span class="string">&#x27;male&#x27;</span>,<span class="string">&#x27;female&#x27;</span>,<span class="string">&#x27;male&#x27;</span>,<span class="string">&#x27;female&#x27;</span>,<span class="string">&#x27;male&#x27;</span>,<span class="string">&#x27;female&#x27;</span>,<span class="string">&#x27;male&#x27;</span>,<span class="string">&#x27;female&#x27;</span>],</span><br><span class="line"><span class="string">&quot;pay&quot;</span>:[<span class="string">&#x27;Y&#x27;</span>,<span class="string">&#x27;N&#x27;</span>,<span class="string">&#x27;Y&#x27;</span>,<span class="string">&#x27;Y&#x27;</span>,<span class="string">&#x27;N&#x27;</span>,<span class="string">&#x27;Y&#x27;</span>,<span class="string">&#x27;N&#x27;</span>,<span class="string">&#x27;Y&#x27;</span>,],</span><br><span class="line"><span class="string">&quot;m-point&quot;</span>:[<span class="number">10</span>,<span class="number">12</span>,<span class="number">20</span>,<span class="number">40</span>,<span class="number">40</span>,<span class="number">40</span>,<span class="number">30</span>,<span class="number">20</span>]&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="1、数据表合并"><a href="#1、数据表合并" class="headerlink" title="1、数据表合并"></a>1、数据表合并</h3><h4 id="1-1-merge"><a href="#1-1-merge" class="headerlink" title="1.1 merge"></a>1.1 merge</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df_inner=pd.merge(df,df1,how=<span class="string">&#x27;inner&#x27;</span>)  <span class="comment"># 匹配合并，交集</span></span><br><span class="line">df_left=pd.merge(df,df1,how=<span class="string">&#x27;left&#x27;</span>)        <span class="comment">#</span></span><br><span class="line">df_right=pd.merge(df,df1,how=<span class="string">&#x27;right&#x27;</span>)</span><br><span class="line">df_outer=pd.merge(df,df1,how=<span class="string">&#x27;outer&#x27;</span>)  <span class="comment">#并集</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-append"><a href="#1-2-append" class="headerlink" title="1.2 append"></a>1.2 append</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = df1.append(df2)</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdn.net/20180611091024579?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3lpeWVsZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<h4 id="1-3-join"><a href="#1-3-join" class="headerlink" title="1.3 join"></a>1.3 join</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = left.join(right, on=<span class="string">&#x27;key&#x27;</span>)</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdn.net/20180611091253685?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3lpeWVsZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<h4 id="1-4-concat"><a href="#1-4-concat" class="headerlink" title="1.4 concat"></a>1.4 concat</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pd.concat(objs, axis=<span class="number">0</span>, join=<span class="string">&#x27;outer&#x27;</span>, join_axes=<span class="literal">None</span>, ignore_index=<span class="literal">False</span>,</span><br><span class="line">	          keys=<span class="literal">None</span>, levels=<span class="literal">None</span>, names=<span class="literal">None</span>, verify_integrity=<span class="literal">False</span>,</span><br><span class="line">	          copy=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>objs︰ 一个序列或系列、 综合或面板对象的映射。如果字典中传递，将作为键参数，使用排序的键，除非它传递，在这种情况下的值将会选择</li>
+<li>（见下文）。任何没有任何反对将默默地被丢弃，除非他们都没有在这种情况下将引发 ValueError。</li>
+<li>axis: {0，1，…}，默认值为 0。要连接沿轴。</li>
+<li>join: {‘内部’、 ‘外’}，默认 ‘外’。如何处理其他 axis(es) 上的索引。联盟内、 外的交叉口。</li>
+<li>ignore_index︰ 布尔值、 默认 False。如果为 True，则不要串联轴上使用的索引值。由此产生的轴将标记</li>
+<li>0，…，n-1。这是有用的如果你串联串联轴没有有意义的索引信息的对象。请注意在联接中仍然受到尊重的其他轴上的索引值。</li>
+<li>join_axes︰ 索引对象的列表。具体的指标，用于其他 n-1 轴而不是执行内部&#x2F;外部设置逻辑。 keys︰</li>
+<li>序列，默认为无。构建分层索引使用通过的键作为最外面的级别。如果多个级别获得通过，应包含元组。</li>
+<li>levels︰ 列表的序列，默认为无。具体水平 （唯一值） 用于构建多重。否则，他们将推断钥匙。</li>
+<li>names︰ 列表中，默认为无。由此产生的分层索引中的级的名称。</li>
+<li>verify_integrity︰ 布尔值、 默认 False。检查是否新的串联的轴包含重复项。这可以是相对于实际数据串联非常昂贵。</li>
+<li>副本︰ 布尔值、 默认 True。如果为 False，请不要，不必要地复制数据。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">例子：<span class="number">1.</span>frames = [df1, df2, df3]</span><br><span class="line">          <span class="number">2.</span>result = pd.concat(frames)</span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdn.net/20180611091426153?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3lpeWVsZQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<h3 id="2、设置索引列"><a href="#2、设置索引列" class="headerlink" title="2、设置索引列"></a>2、设置索引列</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df_inner.set_index(<span class="string">&#x27;id&#x27;</span>)</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3、按照特定列的值排序："><a href="#3、按照特定列的值排序：" class="headerlink" title="3、按照特定列的值排序："></a>3、按照特定列的值排序：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.sort_values(by=[<span class="string">&#x27;age&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、按照索引列排序："><a href="#4、按照索引列排序：" class="headerlink" title="4、按照索引列排序："></a>4、按照索引列排序：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.sort_index()</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、如果prince列的值-3000，group列显示high，否则显示low："><a href="#5、如果prince列的值-3000，group列显示high，否则显示low：" class="headerlink" title="5、如果prince列的值&gt;3000，group列显示high，否则显示low："></a>5、如果prince列的值&gt;3000，group列显示high，否则显示low：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner[<span class="string">&#x27;group&#x27;</span>] = np.where(df_inner[<span class="string">&#x27;price&#x27;</span>] &gt; <span class="number">3000</span>,<span class="string">&#x27;high&#x27;</span>,<span class="string">&#x27;low&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6、对复合多个条件的数据进行分组标记"><a href="#6、对复合多个条件的数据进行分组标记" class="headerlink" title="6、对复合多个条件的数据进行分组标记"></a>6、对复合多个条件的数据进行分组标记</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.loc[(df_inner[<span class="string">&#x27;city&#x27;</span>] == <span class="string">&#x27;beijing&#x27;</span>) &amp; (df_inner[<span class="string">&#x27;price&#x27;</span>] &gt;= <span class="number">4000</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="7、对category字段的值依次进行分列，并创建数据表，索引值为df-inner的索引列，列名称为category和size"><a href="#7、对category字段的值依次进行分列，并创建数据表，索引值为df-inner的索引列，列名称为category和size" class="headerlink" title="7、对category字段的值依次进行分列，并创建数据表，索引值为df_inner的索引列，列名称为category和size"></a>7、对category字段的值依次进行分列，并创建数据表，索引值为df_inner的索引列，列名称为category和size</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.DataFrame((x.split(<span class="string">&#x27;-&#x27;</span>) <span class="keyword">for</span> x <span class="keyword">in</span> df_inner[<span class="string">&#x27;category&#x27;</span>]),index=df_inner.index</span><br></pre></td></tr></table></figure>
+
+<h3 id="8、将完成分裂后的数据表和原df-inner数据表进行匹配"><a href="#8、将完成分裂后的数据表和原df-inner数据表进行匹配" class="headerlink" title="8、将完成分裂后的数据表和原df_inner数据表进行匹配"></a>8、将完成分裂后的数据表和原df_inner数据表进行匹配</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner=pd.merge(df_inner,split,right_index=<span class="literal">True</span>, left_index=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、数据提取"><a href="#五、数据提取" class="headerlink" title="五、数据提取"></a>五、数据提取</h2><p>主要用到的三个函数：loc,iloc和ix，loc函数按标签值进行提取，iloc按位置进行提取，ix可以同时按标签和位置进行提取。</p>
+<h3 id="1、按索引提取单行的数值"><a href="#1、按索引提取单行的数值" class="headerlink" title="1、按索引提取单行的数值"></a>1、按索引提取单行的数值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.loc[<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、按索引提取区域行数值"><a href="#2、按索引提取区域行数值" class="headerlink" title="2、按索引提取区域行数值"></a>2、按索引提取区域行数值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.iloc[<span class="number">0</span>:<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、重设索引"><a href="#3、重设索引" class="headerlink" title="3、重设索引"></a>3、重设索引</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.reset_index()</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、设置日期为索引"><a href="#4、设置日期为索引" class="headerlink" title="4、设置日期为索引"></a>4、设置日期为索引</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner=df_inner.set_index(<span class="string">&#x27;date&#x27;</span>) </span><br></pre></td></tr></table></figure>
+
+<h3 id="5、提取4日之前的所有数据"><a href="#5、提取4日之前的所有数据" class="headerlink" title="5、提取4日之前的所有数据"></a>5、提取4日之前的所有数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner[:<span class="string">&#x27;2013-01-04&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="6、使用iloc按位置区域提取数据"><a href="#6、使用iloc按位置区域提取数据" class="headerlink" title="6、使用iloc按位置区域提取数据"></a>6、使用iloc按位置区域提取数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.iloc[:<span class="number">3</span>,:<span class="number">2</span>] <span class="comment">#冒号前后的数字不再是索引的标签名称，而是数据所在的位置，从0开始，前三行，</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="7、适应iloc按位置单独提起数据"><a href="#7、适应iloc按位置单独提起数据" class="headerlink" title="7、适应iloc按位置单独提起数据"></a>7、适应iloc按位置单独提起数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.iloc[[<span class="number">0</span>,<span class="number">2</span>,<span class="number">5</span>],[<span class="number">4</span>,<span class="number">5</span>]] <span class="comment">#提取第0、2、5行，4、5列</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="8、使用ix按索引标签和位置混合提取数据"><a href="#8、使用ix按索引标签和位置混合提取数据" class="headerlink" title="8、使用ix按索引标签和位置混合提取数据"></a>8、使用ix按索引标签和位置混合提取数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.ix[:<span class="string">&#x27;2013-01-03&#x27;</span>,:<span class="number">4</span>] <span class="comment">#2013-01-03号之前，前四列数据</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="9、判断city列的值是否为北京"><a href="#9、判断city列的值是否为北京" class="headerlink" title="9、判断city列的值是否为北京"></a>9、判断city列的值是否为北京</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner[<span class="string">&#x27;city&#x27;</span>].isin([<span class="string">&#x27;beijing&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="10、判断city列里是否包含beijing和shanghai，然后将符合条件的数据提取出来"><a href="#10、判断city列里是否包含beijing和shanghai，然后将符合条件的数据提取出来" class="headerlink" title="10、判断city列里是否包含beijing和shanghai，然后将符合条件的数据提取出来"></a>10、判断city列里是否包含beijing和shanghai，然后将符合条件的数据提取出来</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.loc[df_inner[<span class="string">&#x27;city&#x27;</span>].isin([<span class="string">&#x27;beijing&#x27;</span>,<span class="string">&#x27;shanghai&#x27;</span>])] </span><br></pre></td></tr></table></figure>
+
+<h3 id="11、提取前三个字符，并生成数据表"><a href="#11、提取前三个字符，并生成数据表" class="headerlink" title="11、提取前三个字符，并生成数据表"></a>11、提取前三个字符，并生成数据表</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.DataFrame(df_inner[<span class="string">&#x27;category&#x27;</span>].<span class="built_in">str</span>[:<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+
+<h2 id="六、数据筛选"><a href="#六、数据筛选" class="headerlink" title="六、数据筛选"></a>六、数据筛选</h2><p>使用与、或、非三个条件配合大于、小于、等于对数据进行筛选，并进行计数和求和。</p>
+<h3 id="1、使用“与”进行筛选"><a href="#1、使用“与”进行筛选" class="headerlink" title="1、使用“与”进行筛选"></a>1、使用“与”进行筛选</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.loc[(df_inner[<span class="string">&#x27;age&#x27;</span>] &gt; <span class="number">25</span>) &amp; (df_inner[<span class="string">&#x27;city&#x27;</span>] == <span class="string">&#x27;beijing&#x27;</span>),  [<span class="string">&#x27;id&#x27;</span>,<span class="string">&#x27;city&#x27;</span>,<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;category&#x27;</span>,<span class="string">&#x27;gender&#x27;</span>]]</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、使用“或”进行筛选"><a href="#2、使用“或”进行筛选" class="headerlink" title="2、使用“或”进行筛选"></a>2、使用“或”进行筛选</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.loc[(df_inner[<span class="string">&#x27;age&#x27;</span>] &gt; <span class="number">25</span>) | (df_inner[<span class="string">&#x27;city&#x27;</span>] == <span class="string">&#x27;beijing&#x27;</span>)[<span class="string">&#x27;id&#x27;</span>,<span class="string">&#x27;city&#x27;</span>,<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;category&#x27;</span>,<span class="string">&#x27;gender&#x27;</span>]].sort([<span class="string">&#x27;age&#x27;</span>]) </span><br></pre></td></tr></table></figure>
+
+<h3 id="3、使用“非”条件进行筛选"><a href="#3、使用“非”条件进行筛选" class="headerlink" title="3、使用“非”条件进行筛选"></a>3、使用“非”条件进行筛选</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.loc[(df_inner[<span class="string">&#x27;city&#x27;</span>] != <span class="string">&#x27;beijing&#x27;</span>), [<span class="string">&#x27;id&#x27;</span>,<span class="string">&#x27;city&#x27;</span>,<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;category&#x27;</span>,<span class="string">&#x27;gender&#x27;</span>]].sort([<span class="string">&#x27;id&#x27;</span>]) </span><br></pre></td></tr></table></figure>
+
+<h3 id="4、对筛选后的数据按city列进行计数"><a href="#4、对筛选后的数据按city列进行计数" class="headerlink" title="4、对筛选后的数据按city列进行计数"></a>4、对筛选后的数据按city列进行计数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.loc[(df_inner[<span class="string">&#x27;city&#x27;</span>] != <span class="string">&#x27;beijing&#x27;</span>), [<span class="string">&#x27;id&#x27;</span>,<span class="string">&#x27;city&#x27;</span>,<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;category&#x27;</span>,<span class="string">&#x27;gender&#x27;</span>]].sort([<span class="string">&#x27;id&#x27;</span>]).city.count()</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、使用query函数进行筛选"><a href="#5、使用query函数进行筛选" class="headerlink" title="5、使用query函数进行筛选"></a>5、使用query函数进行筛选</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.query(<span class="string">&#x27;city == [&quot;beijing&quot;, &quot;shanghai&quot;]&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="6、对筛选后的结果按prince进行求和"><a href="#6、对筛选后的结果按prince进行求和" class="headerlink" title="6、对筛选后的结果按prince进行求和"></a>6、对筛选后的结果按prince进行求和</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.query(<span class="string">&#x27;city == [&quot;beijing&quot;, &quot;shanghai&quot;]&#x27;</span>).price.<span class="built_in">sum</span>()</span><br></pre></td></tr></table></figure>
+
+<h2 id="七、数据汇总"><a href="#七、数据汇总" class="headerlink" title="七、数据汇总"></a>七、数据汇总</h2><p>主要函数是groupby和pivote_table</p>
+<h3 id="1、对所有的列进行计数汇总"><a href="#1、对所有的列进行计数汇总" class="headerlink" title="1、对所有的列进行计数汇总"></a>1、对所有的列进行计数汇总</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.groupby(<span class="string">&#x27;city&#x27;</span>).count()</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、按城市对id字段进行计数"><a href="#2、按城市对id字段进行计数" class="headerlink" title="2、按城市对id字段进行计数"></a>2、按城市对id字段进行计数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.groupby(<span class="string">&#x27;city&#x27;</span>)[<span class="string">&#x27;id&#x27;</span>].count()</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、对两个字段进行汇总计数"><a href="#3、对两个字段进行汇总计数" class="headerlink" title="3、对两个字段进行汇总计数"></a>3、对两个字段进行汇总计数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.groupby([<span class="string">&#x27;city&#x27;</span>,<span class="string">&#x27;size&#x27;</span>])[<span class="string">&#x27;id&#x27;</span>].count()</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、对city字段进行汇总，并分别计算prince的合计和均值"><a href="#4、对city字段进行汇总，并分别计算prince的合计和均值" class="headerlink" title="4、对city字段进行汇总，并分别计算prince的合计和均值"></a>4、对city字段进行汇总，并分别计算prince的合计和均值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.groupby(<span class="string">&#x27;city&#x27;</span>)[<span class="string">&#x27;price&#x27;</span>].agg([<span class="built_in">len</span>,np.<span class="built_in">sum</span>, np.mean]) </span><br></pre></td></tr></table></figure>
+
+<h2 id="八、数据统计"><a href="#八、数据统计" class="headerlink" title="八、数据统计"></a>八、数据统计</h2><p>数据采样，计算标准差，协方差和相关系数</p>
+<h3 id="1、简单的数据采样"><a href="#1、简单的数据采样" class="headerlink" title="1、简单的数据采样"></a>1、简单的数据采样</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.sample(n=<span class="number">3</span>) </span><br></pre></td></tr></table></figure>
+
+<h3 id="2、手动设置采样权重"><a href="#2、手动设置采样权重" class="headerlink" title="2、手动设置采样权重"></a>2、手动设置采样权重</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">weights = [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.5</span>, <span class="number">0.5</span>]</span><br><span class="line">df_inner.sample(n=<span class="number">2</span>, weights=weights) </span><br></pre></td></tr></table></figure>
+
+<h3 id="3、采样后不放回"><a href="#3、采样后不放回" class="headerlink" title="3、采样后不放回"></a>3、采样后不放回</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df_inner.sample(n=<span class="number">6</span>, replace=<span class="literal">False</span>) </span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4、采样后放回"><a href="#4、采样后放回" class="headerlink" title="4、采样后放回"></a>4、采样后放回</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.sample(n=<span class="number">6</span>, replace=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、-数据表描述性统计"><a href="#5、-数据表描述性统计" class="headerlink" title="5、 数据表描述性统计"></a>5、 数据表描述性统计</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df_inner.describe().<span class="built_in">round</span>(<span class="number">2</span>).T <span class="comment">#round函数设置显示小数位，T表示转置</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6、计算列的标准差"><a href="#6、计算列的标准差" class="headerlink" title="6、计算列的标准差"></a>6、计算列的标准差</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner[<span class="string">&#x27;price&#x27;</span>].std()</span><br></pre></td></tr></table></figure>
+
+<h3 id="7、计算两个字段间的协方差"><a href="#7、计算两个字段间的协方差" class="headerlink" title="7、计算两个字段间的协方差"></a>7、计算两个字段间的协方差</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df_inner[<span class="string">&#x27;price&#x27;</span>].cov(df_inner[<span class="string">&#x27;m-point&#x27;</span>]) </span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="8、数据表中所有字段间的协方差"><a href="#8、数据表中所有字段间的协方差" class="headerlink" title="8、数据表中所有字段间的协方差"></a>8、数据表中所有字段间的协方差</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.cov()</span><br></pre></td></tr></table></figure>
+
+<h3 id="9、两个字段的相关性分析"><a href="#9、两个字段的相关性分析" class="headerlink" title="9、两个字段的相关性分析"></a>9、两个字段的相关性分析</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df_inner[<span class="string">&#x27;price&#x27;</span>].corr(df_inner[<span class="string">&#x27;m-point&#x27;</span>]) <span class="comment">#相关系数在-1到1之间，接近1为正相关，接近-1为负相关，0为不相关</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="10、数据表的相关性分析"><a href="#10、数据表的相关性分析" class="headerlink" title="10、数据表的相关性分析"></a>10、数据表的相关性分析</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.corr()</span><br></pre></td></tr></table></figure>
+
+<h2 id="九、数据输出"><a href="#九、数据输出" class="headerlink" title="九、数据输出"></a>九、数据输出</h2><p>分析后的数据可以输出为xlsx格式和csv格式</p>
+<h3 id="1、写入Excel"><a href="#1、写入Excel" class="headerlink" title="1、写入Excel"></a>1、写入Excel</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df_inner.to_excel(<span class="string">&#x27;excel_to_python.xlsx&#x27;</span>, sheet_name=<span class="string">&#x27;bluewhale_cc&#x27;</span>) </span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2、写入到CSV"><a href="#2、写入到CSV" class="headerlink" title="2、写入到CSV"></a>2、写入到CSV</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_inner.to_csv(<span class="string">&#x27;excel_to_python.csv&#x27;</span>) </span><br></pre></td></tr></table></figure>
+
+
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://sizhouliu.github.io">Stupid_Cat</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://sizhouliu.github.io/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/">http://sizhouliu.github.io/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sizhouliu.github.io" target="_blank">Stupid_Cat's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a><a class="post-meta__tags" href="/tags/pandas/">pandas</a></div><div class="post_share"><div class="social-share" data-image="https://img2.imgtp.com/2024/05/07/Sc2GKuJA.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="/%5Bobject%20Object%5D" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/05/09/matplotlib%E5%AD%A6%E4%B9%A0/" title="matplotlib学习"><img class="cover" src="http://39.100.83.144:5000/static/69553890_p1.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">matplotlib学习</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/05/03/Python%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" title="Python的内存管理"><img class="cover" src="https://images.wallpaperscraft.com/image/single/girl_kitten_flower_141058_1280x720.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-05-03</div><div class="title">Python的内存管理</div></div></a></div><div><a href="/2024/05/08/uWsig%E5%AD%A6%E4%B9%A0/" title="uWSGI学习"><img class="cover" src="https://img2.imgtp.com/2024/05/08/NGJvT6p5.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-05-08</div><div class="title">uWSGI学习</div></div></a></div><div><a href="/2024/05/09/matplotlib%E5%AD%A6%E4%B9%A0/" title="matplotlib学习"><img class="cover" src="http://39.100.83.144:5000/static/69553890_p1.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-05-09</div><div class="title">matplotlib学习</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/124754345?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Stupid_Cat</div><div class="author-info__description">这里是蠢猫的博客,记录一下自己的学习生活吧。</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">19</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sizhouliu"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sizhouliu" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:lsz8824523@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到蠢猫的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pandas%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">pandas学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Series"><span class="toc-number">1.1.</span> <span class="toc-text">Series</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#serirs%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="toc-number">1.1.0.1.</span> <span class="toc-text">serirs的创建</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%87%E7%89%87%E5%92%8C%E7%B4%A2%E5%BC%95"><span class="toc-number">1.1.0.2.</span> <span class="toc-text">切片和索引</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DataFrame"><span class="toc-number">1.2.</span> <span class="toc-text">DataFrame</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DataFrame%E7%9A%84%E5%9F%BA%E7%A1%80%E5%B1%9E%E6%80%A7"><span class="toc-number">1.2.0.1.</span> <span class="toc-text">DataFrame的基础属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DataFrame%E7%9A%84%E5%88%87%E7%89%87%E7%B4%A2%E5%BC%95"><span class="toc-number">1.2.0.2.</span> <span class="toc-text">DataFrame的切片索引</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DataFrame%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.0.3.</span> <span class="toc-text">DataFrame的字符串方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DataFrame%E7%9A%84%E6%8E%92%E5%BA%8F"><span class="toc-number">1.2.0.4.</span> <span class="toc-text">DataFrame的排序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%BA%E5%A4%B1%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A4%84%E7%90%86"><span class="toc-number">1.2.0.5.</span> <span class="toc-text">缺失数据的处理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pandas%E8%AF%BB%E5%8F%96%E5%A4%96%E9%83%A8%E6%95%B0%E6%8D%AE"><span class="toc-number">1.3.</span> <span class="toc-text">Pandas读取外部数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E5%90%88%E5%B9%B6%E5%92%8C%E5%88%86%E7%B1%BB%E8%81%9A%E5%90%88"><span class="toc-number">1.4.</span> <span class="toc-text">数据的合并和分类聚合</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%88%E5%B9%B6"><span class="toc-number">1.4.0.1.</span> <span class="toc-text">合并</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%BB%84"><span class="toc-number">1.4.0.2.</span> <span class="toc-text">分组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E5%92%8C%E5%A4%8D%E5%90%88%E7%B4%A2%E5%BC%95"><span class="toc-number">1.4.0.3.</span> <span class="toc-text">索引和复合索引</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#series%E5%A4%8D%E5%90%88%E7%B4%A2%E5%BC%95"><span class="toc-number">1.4.0.3.1.</span> <span class="toc-text">series复合索引</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#DataFrame%E5%A4%8D%E5%90%88%E7%B4%A2%E5%BC%95"><span class="toc-number">1.4.0.3.2.</span> <span class="toc-text">DataFrame复合索引</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pandas%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97"><span class="toc-number">1.5.</span> <span class="toc-text">Pandas时间序列</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E8%8C%83%E5%9B%B4"><span class="toc-number">1.5.0.1.</span> <span class="toc-text">生成一段时间范围</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pandas%E9%87%8D%E9%87%87%E6%A0%B7"><span class="toc-number">1.6.</span> <span class="toc-text">pandas重采样</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PeriodIndex"><span class="toc-number">1.7.</span> <span class="toc-text">PeriodIndex</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pandas%E5%B8%B8%E7%94%A8%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.8.</span> <span class="toc-text">pandas常用接口</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%BB%B4%E5%BA%A6%E6%9F%A5%E7%9C%8B%EF%BC%9A"><span class="toc-number">1.8.1.</span> <span class="toc-text">1、维度查看：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF%EF%BC%88%E7%BB%B4%E5%BA%A6%E3%80%81%E5%88%97%E5%90%8D%E7%A7%B0%E3%80%81%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F%E3%80%81%E6%89%80%E5%8D%A0%E7%A9%BA%E9%97%B4%E7%AD%89%EF%BC%89%EF%BC%9A"><span class="toc-number">1.8.2.</span> <span class="toc-text">2、数据表基本信息（维度、列名称、数据格式、所占空间等）：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E6%AF%8F%E4%B8%80%E5%88%97%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="toc-number">1.8.3.</span> <span class="toc-text">3、每一列数据的格式：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E6%9F%90%E4%B8%80%E5%88%97%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="toc-number">1.8.4.</span> <span class="toc-text">4、某一列格式：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E7%A9%BA%E5%80%BC%EF%BC%9A"><span class="toc-number">1.8.5.</span> <span class="toc-text">5、空值：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%80%E5%88%97%E7%A9%BA%E5%80%BC%EF%BC%9A"><span class="toc-number">1.8.6.</span> <span class="toc-text">6、查看某一列空值：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%80%E5%88%97%E7%9A%84%E5%94%AF%E4%B8%80%E5%80%BC%EF%BC%9A"><span class="toc-number">1.8.7.</span> <span class="toc-text">7、查看某一列的唯一值：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E3%80%81%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E5%80%BC%EF%BC%9A"><span class="toc-number">1.8.8.</span> <span class="toc-text">8、查看数据表的值：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E3%80%81%E6%9F%A5%E7%9C%8B%E5%88%97%E5%90%8D%E7%A7%B0%EF%BC%9A"><span class="toc-number">1.8.9.</span> <span class="toc-text">9、查看列名称：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10%E3%80%81%E6%9F%A5%E7%9C%8B%E5%89%8D5%E8%A1%8C%E6%95%B0%E6%8D%AE%E3%80%81%E5%90%8E5%E8%A1%8C%E6%95%B0%E6%8D%AE%EF%BC%9A"><span class="toc-number">1.8.10.</span> <span class="toc-text">10、查看前5行数据、后5行数据：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%B8%85%E6%B4%97"><span class="toc-number">1.9.</span> <span class="toc-text">三、数据表清洗</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%94%A8%E6%95%B0%E5%AD%970%E5%A1%AB%E5%85%85%E7%A9%BA%E5%80%BC%EF%BC%9A"><span class="toc-number">1.9.1.</span> <span class="toc-text">1、用数字0填充空值：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E4%BD%BF%E7%94%A8%E5%88%97prince%E7%9A%84%E5%9D%87%E5%80%BC%E5%AF%B9NA%E8%BF%9B%E8%A1%8C%E5%A1%AB%E5%85%85%EF%BC%9A"><span class="toc-number">1.9.2.</span> <span class="toc-text">2、使用列prince的均值对NA进行填充：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E6%B8%85%E9%99%A4city%E5%AD%97%E6%AE%B5%E7%9A%84%E5%AD%97%E7%AC%A6%E7%A9%BA%E6%A0%BC%EF%BC%9A"><span class="toc-number">1.9.3.</span> <span class="toc-text">3、清除city字段的字符空格：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E5%A4%A7%E5%B0%8F%E5%86%99%E8%BD%AC%E6%8D%A2%EF%BC%9A"><span class="toc-number">1.9.4.</span> <span class="toc-text">4、大小写转换：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E6%9B%B4%E6%94%B9%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F%EF%BC%9A"><span class="toc-number">1.9.5.</span> <span class="toc-text">5、更改数据格式：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E6%9B%B4%E6%94%B9%E5%88%97%E5%90%8D%E7%A7%B0%EF%BC%9A"><span class="toc-number">1.9.6.</span> <span class="toc-text">6、更改列名称：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81%E5%88%A0%E9%99%A4%E5%90%8E%E5%87%BA%E7%8E%B0%E7%9A%84%E9%87%8D%E5%A4%8D%E5%80%BC%EF%BC%9A"><span class="toc-number">1.9.7.</span> <span class="toc-text">7、删除后出现的重复值：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E3%80%81%E5%88%A0%E9%99%A4%E5%85%88%E5%87%BA%E7%8E%B0%E7%9A%84%E9%87%8D%E5%A4%8D%E5%80%BC%EF%BC%9A"><span class="toc-number">1.9.8.</span> <span class="toc-text">8 、删除先出现的重复值：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E3%80%81%E6%95%B0%E6%8D%AE%E6%9B%BF%E6%8D%A2%EF%BC%9A"><span class="toc-number">1.9.9.</span> <span class="toc-text">9、数据替换：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-number">1.10.</span> <span class="toc-text">四、数据预处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%90%88%E5%B9%B6"><span class="toc-number">1.10.1.</span> <span class="toc-text">1、数据表合并</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-merge"><span class="toc-number">1.10.1.1.</span> <span class="toc-text">1.1 merge</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-append"><span class="toc-number">1.10.1.2.</span> <span class="toc-text">1.2 append</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-join"><span class="toc-number">1.10.1.3.</span> <span class="toc-text">1.3 join</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-concat"><span class="toc-number">1.10.1.4.</span> <span class="toc-text">1.4 concat</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E8%AE%BE%E7%BD%AE%E7%B4%A2%E5%BC%95%E5%88%97"><span class="toc-number">1.10.2.</span> <span class="toc-text">2、设置索引列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E6%8C%89%E7%85%A7%E7%89%B9%E5%AE%9A%E5%88%97%E7%9A%84%E5%80%BC%E6%8E%92%E5%BA%8F%EF%BC%9A"><span class="toc-number">1.10.3.</span> <span class="toc-text">3、按照特定列的值排序：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E6%8C%89%E7%85%A7%E7%B4%A2%E5%BC%95%E5%88%97%E6%8E%92%E5%BA%8F%EF%BC%9A"><span class="toc-number">1.10.4.</span> <span class="toc-text">4、按照索引列排序：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E5%A6%82%E6%9E%9Cprince%E5%88%97%E7%9A%84%E5%80%BC-3000%EF%BC%8Cgroup%E5%88%97%E6%98%BE%E7%A4%BAhigh%EF%BC%8C%E5%90%A6%E5%88%99%E6%98%BE%E7%A4%BAlow%EF%BC%9A"><span class="toc-number">1.10.5.</span> <span class="toc-text">5、如果prince列的值&gt;3000，group列显示high，否则显示low：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E5%AF%B9%E5%A4%8D%E5%90%88%E5%A4%9A%E4%B8%AA%E6%9D%A1%E4%BB%B6%E7%9A%84%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E5%88%86%E7%BB%84%E6%A0%87%E8%AE%B0"><span class="toc-number">1.10.6.</span> <span class="toc-text">6、对复合多个条件的数据进行分组标记</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81%E5%AF%B9category%E5%AD%97%E6%AE%B5%E7%9A%84%E5%80%BC%E4%BE%9D%E6%AC%A1%E8%BF%9B%E8%A1%8C%E5%88%86%E5%88%97%EF%BC%8C%E5%B9%B6%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E8%A1%A8%EF%BC%8C%E7%B4%A2%E5%BC%95%E5%80%BC%E4%B8%BAdf-inner%E7%9A%84%E7%B4%A2%E5%BC%95%E5%88%97%EF%BC%8C%E5%88%97%E5%90%8D%E7%A7%B0%E4%B8%BAcategory%E5%92%8Csize"><span class="toc-number">1.10.7.</span> <span class="toc-text">7、对category字段的值依次进行分列，并创建数据表，索引值为df_inner的索引列，列名称为category和size</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E3%80%81%E5%B0%86%E5%AE%8C%E6%88%90%E5%88%86%E8%A3%82%E5%90%8E%E7%9A%84%E6%95%B0%E6%8D%AE%E8%A1%A8%E5%92%8C%E5%8E%9Fdf-inner%E6%95%B0%E6%8D%AE%E8%A1%A8%E8%BF%9B%E8%A1%8C%E5%8C%B9%E9%85%8D"><span class="toc-number">1.10.8.</span> <span class="toc-text">8、将完成分裂后的数据表和原df_inner数据表进行匹配</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%95%B0%E6%8D%AE%E6%8F%90%E5%8F%96"><span class="toc-number">1.11.</span> <span class="toc-text">五、数据提取</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E6%8C%89%E7%B4%A2%E5%BC%95%E6%8F%90%E5%8F%96%E5%8D%95%E8%A1%8C%E7%9A%84%E6%95%B0%E5%80%BC"><span class="toc-number">1.11.1.</span> <span class="toc-text">1、按索引提取单行的数值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%8C%89%E7%B4%A2%E5%BC%95%E6%8F%90%E5%8F%96%E5%8C%BA%E5%9F%9F%E8%A1%8C%E6%95%B0%E5%80%BC"><span class="toc-number">1.11.2.</span> <span class="toc-text">2、按索引提取区域行数值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E9%87%8D%E8%AE%BE%E7%B4%A2%E5%BC%95"><span class="toc-number">1.11.3.</span> <span class="toc-text">3、重设索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E8%AE%BE%E7%BD%AE%E6%97%A5%E6%9C%9F%E4%B8%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">1.11.4.</span> <span class="toc-text">4、设置日期为索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E6%8F%90%E5%8F%964%E6%97%A5%E4%B9%8B%E5%89%8D%E7%9A%84%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE"><span class="toc-number">1.11.5.</span> <span class="toc-text">5、提取4日之前的所有数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E4%BD%BF%E7%94%A8iloc%E6%8C%89%E4%BD%8D%E7%BD%AE%E5%8C%BA%E5%9F%9F%E6%8F%90%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">1.11.6.</span> <span class="toc-text">6、使用iloc按位置区域提取数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81%E9%80%82%E5%BA%94iloc%E6%8C%89%E4%BD%8D%E7%BD%AE%E5%8D%95%E7%8B%AC%E6%8F%90%E8%B5%B7%E6%95%B0%E6%8D%AE"><span class="toc-number">1.11.7.</span> <span class="toc-text">7、适应iloc按位置单独提起数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E3%80%81%E4%BD%BF%E7%94%A8ix%E6%8C%89%E7%B4%A2%E5%BC%95%E6%A0%87%E7%AD%BE%E5%92%8C%E4%BD%8D%E7%BD%AE%E6%B7%B7%E5%90%88%E6%8F%90%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">1.11.8.</span> <span class="toc-text">8、使用ix按索引标签和位置混合提取数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E3%80%81%E5%88%A4%E6%96%ADcity%E5%88%97%E7%9A%84%E5%80%BC%E6%98%AF%E5%90%A6%E4%B8%BA%E5%8C%97%E4%BA%AC"><span class="toc-number">1.11.9.</span> <span class="toc-text">9、判断city列的值是否为北京</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10%E3%80%81%E5%88%A4%E6%96%ADcity%E5%88%97%E9%87%8C%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%ABbeijing%E5%92%8Cshanghai%EF%BC%8C%E7%84%B6%E5%90%8E%E5%B0%86%E7%AC%A6%E5%90%88%E6%9D%A1%E4%BB%B6%E7%9A%84%E6%95%B0%E6%8D%AE%E6%8F%90%E5%8F%96%E5%87%BA%E6%9D%A5"><span class="toc-number">1.11.10.</span> <span class="toc-text">10、判断city列里是否包含beijing和shanghai，然后将符合条件的数据提取出来</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11%E3%80%81%E6%8F%90%E5%8F%96%E5%89%8D%E4%B8%89%E4%B8%AA%E5%AD%97%E7%AC%A6%EF%BC%8C%E5%B9%B6%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E8%A1%A8"><span class="toc-number">1.11.11.</span> <span class="toc-text">11、提取前三个字符，并生成数据表</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%95%B0%E6%8D%AE%E7%AD%9B%E9%80%89"><span class="toc-number">1.12.</span> <span class="toc-text">六、数据筛选</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E4%BD%BF%E7%94%A8%E2%80%9C%E4%B8%8E%E2%80%9D%E8%BF%9B%E8%A1%8C%E7%AD%9B%E9%80%89"><span class="toc-number">1.12.1.</span> <span class="toc-text">1、使用“与”进行筛选</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E4%BD%BF%E7%94%A8%E2%80%9C%E6%88%96%E2%80%9D%E8%BF%9B%E8%A1%8C%E7%AD%9B%E9%80%89"><span class="toc-number">1.12.2.</span> <span class="toc-text">2、使用“或”进行筛选</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E4%BD%BF%E7%94%A8%E2%80%9C%E9%9D%9E%E2%80%9D%E6%9D%A1%E4%BB%B6%E8%BF%9B%E8%A1%8C%E7%AD%9B%E9%80%89"><span class="toc-number">1.12.3.</span> <span class="toc-text">3、使用“非”条件进行筛选</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E5%AF%B9%E7%AD%9B%E9%80%89%E5%90%8E%E7%9A%84%E6%95%B0%E6%8D%AE%E6%8C%89city%E5%88%97%E8%BF%9B%E8%A1%8C%E8%AE%A1%E6%95%B0"><span class="toc-number">1.12.4.</span> <span class="toc-text">4、对筛选后的数据按city列进行计数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E4%BD%BF%E7%94%A8query%E5%87%BD%E6%95%B0%E8%BF%9B%E8%A1%8C%E7%AD%9B%E9%80%89"><span class="toc-number">1.12.5.</span> <span class="toc-text">5、使用query函数进行筛选</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E5%AF%B9%E7%AD%9B%E9%80%89%E5%90%8E%E7%9A%84%E7%BB%93%E6%9E%9C%E6%8C%89prince%E8%BF%9B%E8%A1%8C%E6%B1%82%E5%92%8C"><span class="toc-number">1.12.6.</span> <span class="toc-text">6、对筛选后的结果按prince进行求和</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%95%B0%E6%8D%AE%E6%B1%87%E6%80%BB"><span class="toc-number">1.13.</span> <span class="toc-text">七、数据汇总</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%AF%B9%E6%89%80%E6%9C%89%E7%9A%84%E5%88%97%E8%BF%9B%E8%A1%8C%E8%AE%A1%E6%95%B0%E6%B1%87%E6%80%BB"><span class="toc-number">1.13.1.</span> <span class="toc-text">1、对所有的列进行计数汇总</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%8C%89%E5%9F%8E%E5%B8%82%E5%AF%B9id%E5%AD%97%E6%AE%B5%E8%BF%9B%E8%A1%8C%E8%AE%A1%E6%95%B0"><span class="toc-number">1.13.2.</span> <span class="toc-text">2、按城市对id字段进行计数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E5%AF%B9%E4%B8%A4%E4%B8%AA%E5%AD%97%E6%AE%B5%E8%BF%9B%E8%A1%8C%E6%B1%87%E6%80%BB%E8%AE%A1%E6%95%B0"><span class="toc-number">1.13.3.</span> <span class="toc-text">3、对两个字段进行汇总计数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E5%AF%B9city%E5%AD%97%E6%AE%B5%E8%BF%9B%E8%A1%8C%E6%B1%87%E6%80%BB%EF%BC%8C%E5%B9%B6%E5%88%86%E5%88%AB%E8%AE%A1%E7%AE%97prince%E7%9A%84%E5%90%88%E8%AE%A1%E5%92%8C%E5%9D%87%E5%80%BC"><span class="toc-number">1.13.4.</span> <span class="toc-text">4、对city字段进行汇总，并分别计算prince的合计和均值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E6%95%B0%E6%8D%AE%E7%BB%9F%E8%AE%A1"><span class="toc-number">1.14.</span> <span class="toc-text">八、数据统计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E6%8D%AE%E9%87%87%E6%A0%B7"><span class="toc-number">1.14.1.</span> <span class="toc-text">1、简单的数据采样</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E6%89%8B%E5%8A%A8%E8%AE%BE%E7%BD%AE%E9%87%87%E6%A0%B7%E6%9D%83%E9%87%8D"><span class="toc-number">1.14.2.</span> <span class="toc-text">2、手动设置采样权重</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E9%87%87%E6%A0%B7%E5%90%8E%E4%B8%8D%E6%94%BE%E5%9B%9E"><span class="toc-number">1.14.3.</span> <span class="toc-text">3、采样后不放回</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E9%87%87%E6%A0%B7%E5%90%8E%E6%94%BE%E5%9B%9E"><span class="toc-number">1.14.4.</span> <span class="toc-text">4、采样后放回</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81-%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%8F%8F%E8%BF%B0%E6%80%A7%E7%BB%9F%E8%AE%A1"><span class="toc-number">1.14.5.</span> <span class="toc-text">5、 数据表描述性统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E8%AE%A1%E7%AE%97%E5%88%97%E7%9A%84%E6%A0%87%E5%87%86%E5%B7%AE"><span class="toc-number">1.14.6.</span> <span class="toc-text">6、计算列的标准差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81%E8%AE%A1%E7%AE%97%E4%B8%A4%E4%B8%AA%E5%AD%97%E6%AE%B5%E9%97%B4%E7%9A%84%E5%8D%8F%E6%96%B9%E5%B7%AE"><span class="toc-number">1.14.7.</span> <span class="toc-text">7、计算两个字段间的协方差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E3%80%81%E6%95%B0%E6%8D%AE%E8%A1%A8%E4%B8%AD%E6%89%80%E6%9C%89%E5%AD%97%E6%AE%B5%E9%97%B4%E7%9A%84%E5%8D%8F%E6%96%B9%E5%B7%AE"><span class="toc-number">1.14.8.</span> <span class="toc-text">8、数据表中所有字段间的协方差</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E3%80%81%E4%B8%A4%E4%B8%AA%E5%AD%97%E6%AE%B5%E7%9A%84%E7%9B%B8%E5%85%B3%E6%80%A7%E5%88%86%E6%9E%90"><span class="toc-number">1.14.9.</span> <span class="toc-text">9、两个字段的相关性分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10%E3%80%81%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%9A%84%E7%9B%B8%E5%85%B3%E6%80%A7%E5%88%86%E6%9E%90"><span class="toc-number">1.14.10.</span> <span class="toc-text">10、数据表的相关性分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E6%95%B0%E6%8D%AE%E8%BE%93%E5%87%BA"><span class="toc-number">1.15.</span> <span class="toc-text">九、数据输出</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%86%99%E5%85%A5Excel"><span class="toc-number">1.15.1.</span> <span class="toc-text">1、写入Excel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%86%99%E5%85%A5%E5%88%B0CSV"><span class="toc-number">1.15.2.</span> <span class="toc-text">2、写入到CSV</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/" title="pandas学习"><img src="https://img2.imgtp.com/2024/05/07/Sc2GKuJA.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="pandas学习"/></a><div class="content"><a class="title" href="/2024/05/09/pandas%E5%AD%A6%E4%B9%A0/" title="pandas学习">pandas学习</a><time datetime="2024-05-09T14:10:41.000Z" title="发表于 2024-05-09 22:10:41">2024-05-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/09/matplotlib%E5%AD%A6%E4%B9%A0/" title="matplotlib学习"><img src="http://39.100.83.144:5000/static/69553890_p1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="matplotlib学习"/></a><div class="content"><a class="title" href="/2024/05/09/matplotlib%E5%AD%A6%E4%B9%A0/" title="matplotlib学习">matplotlib学习</a><time datetime="2024-05-09T13:36:02.000Z" title="发表于 2024-05-09 21:36:02">2024-05-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/08/uWsig%E5%AD%A6%E4%B9%A0/" title="uWSGI学习"><img src="https://img2.imgtp.com/2024/05/08/NGJvT6p5.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="uWSGI学习"/></a><div class="content"><a class="title" href="/2024/05/08/uWsig%E5%AD%A6%E4%B9%A0/" title="uWSGI学习">uWSGI学习</a><time datetime="2024-05-08T14:00:46.000Z" title="发表于 2024-05-08 22:00:46">2024-05-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/08/Jupyter-Notebook%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/" title="Jupyter_Notebook使用技巧"><img src="https://img2.imgtp.com/2024/05/08/4lXsEb6r.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Jupyter_Notebook使用技巧"/></a><div class="content"><a class="title" href="/2024/05/08/Jupyter-Notebook%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/" title="Jupyter_Notebook使用技巧">Jupyter_Notebook使用技巧</a><time datetime="2024-05-08T05:24:49.000Z" title="发表于 2024-05-08 13:24:49">2024-05-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/05/08/%E7%94%A8%E4%BA%8E%E8%AE%B2%E8%AF%9D%E8%80%85%E8%A7%86%E5%90%AC%E8%BF%BD%E8%B8%AA%EF%BC%8C%E5%9F%BA%E4%BA%8E%E8%87%AA%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%A4%9A%E6%A8%A1%E6%80%81%E6%84%9F%E7%9F%A5%E6%B3%A8%E6%84%8F%E5%8A%9B%E7%BD%91%E7%BB%9C%E2%80%94%E2%80%94%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="用于讲话者视听追踪，基于自监督学习的多模态感知注意力网络——论文阅读"><img src="https://img2.imgtp.com/2024/05/08/yCs0Bom5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="用于讲话者视听追踪，基于自监督学习的多模态感知注意力网络——论文阅读"/></a><div class="content"><a class="title" href="/2024/05/08/%E7%94%A8%E4%BA%8E%E8%AE%B2%E8%AF%9D%E8%80%85%E8%A7%86%E5%90%AC%E8%BF%BD%E8%B8%AA%EF%BC%8C%E5%9F%BA%E4%BA%8E%E8%87%AA%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%A4%9A%E6%A8%A1%E6%80%81%E6%84%9F%E7%9F%A5%E6%B3%A8%E6%84%8F%E5%8A%9B%E7%BD%91%E7%BB%9C%E2%80%94%E2%80%94%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="用于讲话者视听追踪，基于自监督学习的多模态感知注意力网络——论文阅读">用于讲话者视听追踪，基于自监督学习的多模态感知注意力网络——论文阅读</a><time datetime="2024-05-08T05:12:12.000Z" title="发表于 2024-05-08 13:12:12">2024-05-08</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://img2.imgtp.com/2024/05/07/Sc2GKuJA.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Stupid_Cat</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><script src="/js/font.js"></script><script src="/js/jquery.js"></script><script src="/js/foot.js"></script><div class="aplayer no-destroy" data-id="716181165" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-order="random" data-volume="0.3" data-mutex="true" data-listMaxHeight="36vh"> </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
