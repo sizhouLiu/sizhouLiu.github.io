@@ -1,15 +1,17 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>操作系统 | Stupid_Cat's Blog</title><meta name="author" content="Stupid_Cat"><meta name="copyright" content="Stupid_Cat"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="这里是蠢猫的博客,记录一下自己的学习生活吧。">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>操作系统 | Stupid_Cat's Blog</title><meta name="author" content="Stupid_Cat"><meta name="copyright" content="Stupid_Cat"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="操作系统 第一章、引论操作系统的主要功能  处理机的管理 储存器的管理 设备管理 文件管理 接口管理  操作系统的特征  并发： 两个或多个事件在同一事件间隔内发生 共享： 系统中的资源可供内存中多个并发执行的进程共同使用 虚拟：把一个物理上的实体变成若干个物理上的对应物 异步：在多道程序的环境下 运行程序走走停停，以不可知的速度向前推进   操作系统在计算机系统中处于计算机硬件和用户之间的位置">
 <meta property="og:type" content="article">
 <meta property="og:title" content="操作系统">
 <meta property="og:url" content="http://sizhouliu.github.io/2024/12/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.html">
 <meta property="og:site_name" content="Stupid_Cat&#39;s Blog">
-<meta property="og:description" content="这里是蠢猫的博客,记录一下自己的学习生活吧。">
+<meta property="og:description" content="操作系统 第一章、引论操作系统的主要功能  处理机的管理 储存器的管理 设备管理 文件管理 接口管理  操作系统的特征  并发： 两个或多个事件在同一事件间隔内发生 共享： 系统中的资源可供内存中多个并发执行的进程共同使用 虚拟：把一个物理上的实体变成若干个物理上的对应物 异步：在多道程序的环境下 运行程序走走停停，以不可知的速度向前推进   操作系统在计算机系统中处于计算机硬件和用户之间的位置">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://avatars.githubusercontent.com/u/124754345?v=4">
 <meta property="article:published_time" content="2024-12-10T13:28:30.000Z">
-<meta property="article:modified_time" content="2024-12-10T13:28:30.920Z">
+<meta property="article:modified_time" content="2024-12-10T13:49:19.607Z">
 <meta property="article:author" content="Stupid_Cat">
-<meta property="article:tag" content="让过去过去">
+<meta property="article:tag" content="OS">
+<meta property="article:tag" content="408">
+<meta property="article:tag" content="考试">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://avatars.githubusercontent.com/u/124754345?v=4"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://sizhouliu.github.io/2024/12/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
   root: '/',
@@ -55,8 +57,8 @@
   isPost: true,
   isHome: false,
   isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2024-12-10 21:28:30'
+  isToc: true,
+  postUpdate: '2024-12-10 21:49:19'
 }</script><script>(win=>{
       win.saveToLocal = {
         set: (key, value, ttl) => {
@@ -174,7 +176,203 @@
     document.addEventListener('pjax:send', () => { preloader.initLoading() })
     document.addEventListener('pjax:complete', () => { preloader.endLoading() })
   }
-})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/124754345?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://39.100.83.144/"><span> 课程表</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2023/10/02/UgKNjLrGic13daS.webp')"><nav id="nav"><span id="blog-info"><a href="/" title="Stupid_Cat's Blog"><span class="site-name">Stupid_Cat's Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://39.100.83.144/"><span> 课程表</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">操作系统</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-10T13:28:30.000Z" title="发表于 2024-12-10 21:28:30">2024-12-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-12-10T13:28:30.920Z" title="更新于 2024-12-10 21:28:30">2024-12-10</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">0</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="操作系统"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://sizhouliu.github.io">Stupid_Cat</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://sizhouliu.github.io/2024/12/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">http://sizhouliu.github.io/2024/12/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sizhouliu.github.io" target="_blank">Stupid_Cat's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://avatars.githubusercontent.com/u/124754345?v=4" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="/%5Bobject%20Object%5D" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/12/10/locust%E5%AD%A6%E4%B9%A0/" title="locust学习"><img class="cover" src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/116351139_p0.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">locust学习</div></div></a></div><div class="next-post pull-right"><a href="/2024/12/10/Docker%E5%AD%A6%E4%B9%A0/" title="Docker学习"><img class="cover" src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/kv7rlicu.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Docker学习</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/124754345?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Stupid_Cat</div><div class="author-info__description">这里是蠢猫的博客,记录一下自己的学习生活吧。</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">39</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sizhouliu"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sizhouliu" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:lsz8824523@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到蠢猫的博客</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/12/10/locust%E5%AD%A6%E4%B9%A0/" title="locust学习"><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/116351139_p0.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="locust学习"/></a><div class="content"><a class="title" href="/2024/12/10/locust%E5%AD%A6%E4%B9%A0/" title="locust学习">locust学习</a><time datetime="2024-12-10T13:38:56.000Z" title="发表于 2024-12-10 21:38:56">2024-12-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/12/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" title="操作系统">操作系统</a><time datetime="2024-12-10T13:28:30.000Z" title="发表于 2024-12-10 21:28:30">2024-12-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/12/10/Docker%E5%AD%A6%E4%B9%A0/" title="Docker学习"><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/kv7rlicu.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker学习"/></a><div class="content"><a class="title" href="/2024/12/10/Docker%E5%AD%A6%E4%B9%A0/" title="Docker学习">Docker学习</a><time datetime="2024-12-10T13:28:18.000Z" title="发表于 2024-12-10 21:28:18">2024-12-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/12/10/Springboot%E9%80%9F%E6%88%90/" title="Springboot速成">Springboot速成</a><time datetime="2024-12-10T13:27:12.000Z" title="发表于 2024-12-10 21:27:12">2024-12-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/12/10/Golang%E5%AD%A6%E4%B9%A0/" title="Golang学习"><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/118733069_p0.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Golang学习"/></a><div class="content"><a class="title" href="/2024/12/10/Golang%E5%AD%A6%E4%B9%A0/" title="Golang学习">Golang学习</a><time datetime="2024-12-10T13:24:01.000Z" title="发表于 2024-12-10 21:24:01">2024-12-10</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s2.loli.net/2023/10/02/UgKNjLrGic13daS.webp')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Stupid_Cat</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>if (!window.MathJax) {
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/124754345?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://39.100.83.144/"><span> 课程表</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2023/10/02/UgKNjLrGic13daS.webp')"><nav id="nav"><span id="blog-info"><a href="/" title="Stupid_Cat's Blog"><span class="site-name">Stupid_Cat's Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="http://39.100.83.144/"><span> 课程表</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 生活</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/shuoshuo/"><i class="fa-fw fa fa-comments-o"></i><span> 分享</span></a></li><li><a class="site-page child" href="/photos/"><i class="fa-fw fa fa-camera-retro"></i><span> 相册</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fa fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 影视</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">操作系统</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-12-10T13:28:30.000Z" title="发表于 2024-12-10 21:28:30">2024-12-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-12-10T13:49:19.607Z" title="更新于 2024-12-10 21:49:19">2024-12-10</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="操作系统"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h1><hr>
+<h2 id="第一章、引论"><a href="#第一章、引论" class="headerlink" title="第一章、引论"></a>第一章、引论</h2><p>操作系统的主要功能</p>
+<ol>
+<li>处理机的管理</li>
+<li>储存器的管理</li>
+<li>设备管理</li>
+<li>文件管理</li>
+<li>接口管理</li>
+</ol>
+<p>操作系统的特征</p>
+<ol>
+<li>并发： 两个或多个事件在同一事件间隔内发生</li>
+<li>共享： 系统中的资源可供内存中多个并发执行的进程共同使用</li>
+<li>虚拟：把一个物理上的实体变成若干个物理上的对应物</li>
+<li>异步：在多道程序的环境下 运行程序走走停停，以不可知的速度向前推进</li>
+</ol>
+<p> 操作系统在计算机系统中处于计算机硬件和用户之间的位置</p>
+<p>操作系统的基本类型有实时操作系统 批处理操作系统以及分时操作系统</p>
+<ol>
+<li><p>实时操作系统：</p>
+<ul>
+<li>优先处理紧急事务，实时性、可靠性</li>
+</ul>
+</li>
+<li><p>批处理操作系统：</p>
+<ul>
+<li>多道批处理并发执行，提高资源利用率</li>
+</ul>
+</li>
+<li><p>分时操作系统：</p>
+<ul>
+<li>允许用户与计算机直接交互</li>
+</ul>
+</li>
+</ol>
+<h2 id="第二章-、进程的描述与控制"><a href="#第二章-、进程的描述与控制" class="headerlink" title="第二章 、进程的描述与控制"></a>第二章 、进程的描述与控制</h2><ul>
+<li>进程 ：动态的程序的一次执行过程</li>
+</ul>
+<p>[进程创建, 创建原语].<br>(1)过程:<br>① 为新进程分配一个唯一的进程标识号,并申请一个空白的 PCB.若 PCB 申请失败,则进程创建失败<br>②为进程分配运行所需的资源,如内存、文件、I&#x2F;O设备、CPU 时间等,这些资源或从 Os 获得,或从父进程获得.若资源不足,则处于创建态,等待内存资源③ 初始化 PCB,主要为初始化标志信息、CPU 状态信息、CPU 控制信息,并设置进程的优先级等.④ 若进程就绪队列能接纳新进程,则新进程入队,等待调度.(2)引起进程创建的事件:<br>① 用户登录,<br>② 高级调度(作业调度): 从后备队列中选一个作业调入内存,并为其创建进程<br>③ 提供服务: 如 OS 响应用户请求时,为用户创建一个子进程,④ 应用请求: 如 Unix 系统的 fork() 函数.</p>
+<p>进程的组成：</p>
+<ul>
+<li>PCB<ul>
+<li>进程标识符PID</li>
+<li>用户标识符UID、</li>
+<li>控制信息</li>
+</ul>
+</li>
+<li>程序段：程序的代码</li>
+<li>数据段：运行时产生的数据</li>
+</ul>
+<p>进程的特征：</p>
+<p>动态性 并发性 独立性 异步性 结构性 进程的转换</p>
+<p><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/image-20241128201353080.png" alt="image-20241128201353080"></p>
+<p>运行态-&gt;就绪态： 时间片到.cpu被其他高优先级的进程抢占</p>
+<p>运行态 -&gt; 阻塞态：等待系统资源分配，等待某事发生</p>
+<p>进程通信的三种方式</p>
+<ol>
+<li><p>共享储存器机制</p>
+</li>
+<li><p>消息传递机制</p>
+<table>
+<thead>
+<tr>
+<th>消息头</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>消息域</td>
+</tr>
+</tbody></table>
+<p>发送进程ID</p>
+<p>接受进程ID</p>
+</li>
+<li><p>管道通信</p>
+<ul>
+<li>进程p -&gt; 管道 -&gt; 进程Q</li>
+</ul>
+</li>
+</ol>
+<p>线程</p>
+<p>线程是一个基本的cpu的执行单元、也是程序执行流的最小单位</p>
+<p>引入线程之后，进程之间可并发，进程内的各线程之间也可以并发</p>
+<p>进程是资源分配的基本单位，线程是调度的基本单位</p>
+<p>每个线程都有一个线程ID，线程控制块（TCB）</p>
+<p>线程也有就绪态 阻塞态 运行态三种基本状态</p>
+<p>线程的实现方式</p>
+<p><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/image-20241128211040539.png" alt="image-20241128211040539"></p>
+<p>用户级线程 –&gt;内核级线程</p>
+<h2 id="第三章-处理机调度与死锁"><a href="#第三章-处理机调度与死锁" class="headerlink" title="第三章 处理机调度与死锁"></a>第三章 处理机调度与死锁</h2><p>进程调度方式</p>
+<p>非抢占式：</p>
+<ul>
+<li>​	进程一直执行完，才执行下一个进程</li>
+</ul>
+<p>抢占式：</p>
+<p>​	有更重要的进程需要处理机时，将处理机分配给重要的进程</p>
+<p>调度算法的指标<br>$$<br>周转时间 &#x3D; 完成时间 -到达时间<br>$$</p>
+<p>$$<br>带权周转时间 &#x3D;\frac{周转时间}{实际运行时间}<br>$$</p>
+<p>$$<br>等待时间 &#x3D; 周转时间- 实际运行时间<br>$$</p>
+<p>调度算法</p>
+<p>1.先来先服务（FCFS）</p>
+<table>
+<thead>
+<tr>
+<th>进程</th>
+<th>到达时间</th>
+<th>运行时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>p1</td>
+<td>0</td>
+<td>7</td>
+</tr>
+<tr>
+<td>p2</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>p3</td>
+<td>4</td>
+<td>1</td>
+</tr>
+<tr>
+<td>p4</td>
+<td>5</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<p><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/image-20241128212035592.png" alt="image-20241128212035592"></p>
+<p>2.短作业优先</p>
+<p>2.1 非抢占式</p>
+<p><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/image-20241128212600723.png" alt="image-20241128212600723"></p>
+<p><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/image-20241128212523461.png" alt="image-20241128212523461"></p>
+<p><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/image-20241128212759044.png" alt="image-20241128212759044"></p>
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><p>各进程互相等待对方手里的资源 导致进程都阻塞无法向前推进的现象</p>
+<ul>
+<li><p>死锁产生的必要条件</p>
+</li>
+<li><ol>
+<li>互斥条件 </li>
+<li>不剥夺条件</li>
+<li>请求和保持条件</li>
+<li>循环条件</li>
+</ol>
+<p>死锁的处理策略</p>
+</li>
+</ul>
+<ol>
+<li>预防死锁 破环死锁的四个必要条件中的一个</li>
+<li>避免死锁 用某种方式防止进入不安全状态</li>
+<li>检测死锁：允许死锁发生 检查出发生后采取措施</li>
+<li>接触死锁</li>
+</ol>
+<p>处理策略</p>
+<p>预防死锁：对资源采用按序分配策略</p>
+<p>避免死锁 银行家算法</p>
+<p>系统处于安全状态 就一定不会发生死锁</p>
+<p>系统处于不安全状态 就可能发生死锁</p>
+<h3 id="银行家算法"><a href="#银行家算法" class="headerlink" title="银行家算法"></a>银行家算法</h3><p>PASS</p>
+<h2 id="第四章-进程同步"><a href="#第四章-进程同步" class="headerlink" title="第四章 进程同步"></a>第四章 进程同步</h2><p>进程同步与进程互斥</p>
+<ul>
+<li>进程同步：两个或多个进程在它们的工作次序产生的制约关系</li>
+<li>进程互斥 ： 一个进程访问临界资源时另一个想要访问该资源时必须获得</li>
+</ul>
+<p>信号量机制</p>
+<p> wait(s) 原语  P操作</p>
+<p>signal(s) 原语  V 操作</p>
+<p>记录型信号量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/*记录型信号量的定义*/</span><br><span class="line">typedef struct&#123;</span><br><span class="line">int value;//剩余溃源数</span><br><span class="line">struct process *L:1 //等待队列</span><br><span class="line">&#125; semaphore :</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">void wait(semaphore s)&#123;</span><br><span class="line">	s.value --;</span><br><span class="line">	if(s.value &lt;0)bolck(s.L);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Void sinal(semaphore s</span><br><span class="line">S. value ++ ;</span><br><span class="line">if(s.value&lt;=o)</span><br><span class="line">wakeupl(s.L);</span><br></pre></td></tr></table></figure>
+
+<p>S.value ++ 之后&lt;&#x3D;0,有进程等特该资源</p>
+<p>S.valuet++后&gt;0,已没有进程等待</p>
+<p>S.value 初值为某资源的数目.</p>
+<p>S.yalue&#x3D;-2,有2个进程在等待</p>
+<p>用信号量实现进程互斥、同步1、进程互斥<br>(互斥信号量mutex,初值为!)在进入区plmutex)–申请资源在退出区vlmutex)–释放没源</p>
+<h2 id="第五章存储器管理"><a href="#第五章存储器管理" class="headerlink" title="第五章存储器管理"></a>第五章存储器管理</h2><p>解决程序大小超过物理内存总和的问题 使用覆盖技术与交还技术</p>
+<p>连续分配储存管理方式</p>
+<p>1.单一连续分配</p>
+<p>​	分为系统区和用户区</p>
+<p>系统位于内存的低地址部分</p>
+<p>用户区位于内存的地址部分</p>
+<p>用户区存放用户进程的数据</p>
+<p>①首次适应算法:</p>
+<p>找到第一个能满足大小的分区</p>
+<p>最佳造应算法:优先使用更小的分区</p>
+<p>③最坏适应算法:优先使用更大的空闲区<br>4 邻近适应莫法:从上次查找结束位置开始查找第一个空闲分区</p>
+<p>页号&#x3D;逻辑地址&#x2F;页面长度</p>
+<p>页内偏移量&#x3D;逻辑地址%页面长度</p>
+<p>物理地址&#x3D;页面女台址+页内偏移量</p>
+<p><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/image-20241128220852842.png" alt="image-20241128220852842"></p>
+<h2 id="第七章输入输出系统"><a href="#第七章输入输出系统" class="headerlink" title="第七章输入输出系统"></a>第七章输入输出系统</h2><p>1.先来先服务算法</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://sizhouliu.github.io">Stupid_Cat</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://sizhouliu.github.io/2024/12/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">http://sizhouliu.github.io/2024/12/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://sizhouliu.github.io" target="_blank">Stupid_Cat's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/OS/">OS</a><a class="post-meta__tags" href="/tags/408/">408</a><a class="post-meta__tags" href="/tags/%E8%80%83%E8%AF%95/">考试</a></div><div class="post_share"><div class="social-share" data-image="https://avatars.githubusercontent.com/u/124754345?v=4" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="/%5Bobject%20Object%5D" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/12/10/locust%E5%AD%A6%E4%B9%A0/" title="locust学习"><img class="cover" src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/116351139_p0.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">locust学习</div></div></a></div><div class="next-post pull-right"><a href="/2024/12/10/Docker%E5%AD%A6%E4%B9%A0/" title="Docker学习"><img class="cover" src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/kv7rlicu.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Docker学习</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/124754345?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Stupid_Cat</div><div class="author-info__description">这里是蠢猫的博客,记录一下自己的学习生活吧。</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/sizhouliu"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/sizhouliu" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:lsz8824523@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到蠢猫的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">操作系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%E3%80%81%E5%BC%95%E8%AE%BA"><span class="toc-number">1.1.</span> <span class="toc-text">第一章、引论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0-%E3%80%81%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%8F%8F%E8%BF%B0%E4%B8%8E%E6%8E%A7%E5%88%B6"><span class="toc-number">1.2.</span> <span class="toc-text">第二章 、进程的描述与控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0-%E5%A4%84%E7%90%86%E6%9C%BA%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81"><span class="toc-number">1.3.</span> <span class="toc-text">第三章 处理机调度与死锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%BB%E9%94%81"><span class="toc-number">1.3.1.</span> <span class="toc-text">死锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95"><span class="toc-number">1.3.2.</span> <span class="toc-text">银行家算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0-%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-number">1.4.</span> <span class="toc-text">第四章 进程同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%E5%AD%98%E5%82%A8%E5%99%A8%E7%AE%A1%E7%90%86"><span class="toc-number">1.5.</span> <span class="toc-text">第五章存储器管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%83%E7%AB%A0%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.6.</span> <span class="toc-text">第七章输入输出系统</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/12/10/locust%E5%AD%A6%E4%B9%A0/" title="locust学习"><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/116351139_p0.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="locust学习"/></a><div class="content"><a class="title" href="/2024/12/10/locust%E5%AD%A6%E4%B9%A0/" title="locust学习">locust学习</a><time datetime="2024-12-10T13:38:56.000Z" title="发表于 2024-12-10 21:38:56">2024-12-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/12/10/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" title="操作系统">操作系统</a><time datetime="2024-12-10T13:28:30.000Z" title="发表于 2024-12-10 21:28:30">2024-12-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/12/10/Docker%E5%AD%A6%E4%B9%A0/" title="Docker学习"><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/kv7rlicu.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker学习"/></a><div class="content"><a class="title" href="/2024/12/10/Docker%E5%AD%A6%E4%B9%A0/" title="Docker学习">Docker学习</a><time datetime="2024-12-10T13:28:18.000Z" title="发表于 2024-12-10 21:28:18">2024-12-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/12/10/Springboot%E9%80%9F%E6%88%90/" title="Springboot速成">Springboot速成</a><time datetime="2024-12-10T13:27:12.000Z" title="发表于 2024-12-10 21:27:12">2024-12-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/12/10/Golang%E5%AD%A6%E4%B9%A0/" title="Golang学习"><img src="https://stupid-blog-img.oss-cn-beijing.aliyuncs.com/Blog/118733069_p0.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Golang学习"/></a><div class="content"><a class="title" href="/2024/12/10/Golang%E5%AD%A6%E4%B9%A0/" title="Golang学习">Golang学习</a><time datetime="2024-12-10T13:24:01.000Z" title="发表于 2024-12-10 21:24:01">2024-12-10</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s2.loli.net/2023/10/02/UgKNjLrGic13daS.webp')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Stupid_Cat</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>if (!window.MathJax) {
   window.MathJax = {
     tex: {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
